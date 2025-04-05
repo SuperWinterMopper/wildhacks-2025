@@ -1,6 +1,6 @@
 import Image from "next/image";
-import DistanceSelector from "./InitialSelection";
-import ButtonPress from "./ButtonPress";
+import DistanceSelector from "./initial-selection";
+import ButtonPress from "./button-press";
 
 export default function Home() {
   return (  
