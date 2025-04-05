@@ -27,14 +27,14 @@ export default function DistanceSelector() {
       <div className="flex items-center">
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-r-none border-r-0">
+              <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer">
                 {travelType}
                 <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {travelTypes.map((u) => (
-                <DropdownMenuItem key={u} onClick={() => setTravelType(u)}>
+                <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setTravelType(u)}>
                   {u}
                 </DropdownMenuItem>
               ))}
@@ -61,14 +61,14 @@ export default function DistanceSelector() {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="rounded-l-none border-l-0">
+            <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer">
               {unit}
               <ChevronDown className="ml-1 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {units.map((u) => (
-              <DropdownMenuItem key={u} onClick={() => setUnit(u)}>
+              <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setUnit(u)}>
                 {u}
               </DropdownMenuItem>
             ))}
@@ -90,7 +90,26 @@ export default function DistanceSelector() {
               setScenery(value[0]);
               console.log(scenery);
             }}
-            className={cn("w-[60%] bg-green-200")}
+            className={cn("w-[60%] bg-green-200 cursor-pointer")}
+          />
+        </CardContent>
+      </Card>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Safety</CardTitle>
+          <CardDescription>{safety}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Slider
+            defaultValue={[safety]}
+            max={5}
+            min={1}
+            step={1}
+            onValueChange={(value) => {
+              setSafety(value[0]);
+              console.log(safety);
+            }}
+            className={cn("w-[60%] bg-green-200 cursor-pointer")}
           />
         </CardContent>
       </Card>
