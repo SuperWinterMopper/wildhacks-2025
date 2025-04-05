@@ -77,45 +77,58 @@ export default function DistanceSelector() {
           </DropdownMenu>
         </div>
       </div>
+
+      <div className="w-full text-5xl py-5">Starting from...</div>
+      <div className="w-full flex gap-4">
+        <Input type="text" placeholder="Enter a location" className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" />
+      </div>
+      
+
+
       <div className="w-full text-5xl py-5">Prioritizing...</div>
-      <Card className="w-full !text-3xl">
-        <CardHeader>
-          <CardTitle>Scenery</CardTitle>
-          <CardDescription className="text-2xl">{scenery}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Slider
-            defaultValue={[scenery]}
-            max={5}
-            min={1}
-            step={1}
-            onValueChange={(value) => {
-              setScenery(value[0]);
-              console.log(scenery);
-            }}
-            className={cn("w-[100%] cursor-pointer")}
-          />
-        </CardContent>
-      </Card>
-      <Card className="w-full !text-3xl">
-        <CardHeader>
-          <CardTitle>Safety</CardTitle>
-          <CardDescription className="text-2xl">{safety}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Slider
-            defaultValue={[safety]}
-            max={5}
-            min={1}
-            step={1}
-            onValueChange={(value) => {
-              setSafety(value[0]);
-              console.log(safety);
-            }}
-            className={cn("w-[100%] cursor-pointer")}
-          />
-        </CardContent>
-      </Card>
+      <div className="w-full flex gap-4">
+        <Card className="w-1/2 text-3xl">
+          <CardHeader>
+            <CardTitle>Scenery</CardTitle>
+            <CardDescription className="text-2xl">{scenery}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              defaultValue={[scenery]}
+              max={5}
+              min={1}
+              step={1}
+              onValueChange={(value) => {
+                setScenery(value[0]);
+                console.log(scenery);
+              }}
+              className={cn("w-[100%] cursor-pointer")}
+            />
+          </CardContent>
+        </Card>
+        <Card className="w-1/2 !text-3xl">
+          <CardHeader>
+            <CardTitle>Safety</CardTitle>
+            <CardDescription className="text-2xl">{safety}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              defaultValue={[safety]}
+              max={5}
+              min={1}
+              step={1}
+              onValueChange={(value) => {
+                setSafety(value[0]);
+                console.log(safety);
+              }}
+              className={cn("w-[100%] cursor-pointer")}
+            />
+          </CardContent>
+        </Card>
+      </div>
+
+
+      
     </div>
   )
 }
