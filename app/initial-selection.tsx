@@ -22,14 +22,15 @@ export default function DistanceSelector() {
   const travelTypes = ["cycle", "run"];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 p-4">
-      <div className="text-lg">I want to...</div>
-      <div className="flex items-center">
-        <DropdownMenu>
+    <div className="flex flex-wrap items-center justify-center gap-2 p-4 w-full">
+      <div className="w-full py-5">
+        <div className="text-lg py-5">I want to...</div>
+        <div className="flex items-center w-full">
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer">
+              <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/4">
                 {travelType}
-                <ChevronDown className="ml-1 h-4 w-4" />
+                <ChevronDown className="ml-1 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -40,40 +41,41 @@ export default function DistanceSelector() {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-        <Input
-          type="number"
-          value={distance}
-          onChange={(e) => setDistance(e.target.value)}
-          className="w-30 rounded-r-none rounded-l-none"
-          min="0"
-        />
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <span className="text-white">±</span>
-          </div>
           <Input
             type="number"
-            value={distanceRange}
-            onChange={(e) => setDistanceRange(e.target.value)}
-            className="w-30 rounded-r-none rounded-l-none pl-7" 
+            value={distance}
+            onChange={(e) => setDistance(e.target.value)}
+            className="rounded-r-none rounded-l-none flex-grow w-1/4"
             min="0"
           />
+          <div className="relative flex-grow w-1/4">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <span className="text-white">±</span>
+            </div>
+            <Input
+              type="number"
+              value={distanceRange}
+              onChange={(e) => setDistanceRange(e.target.value)}
+              className="rounded-r-none rounded-l-none pl-7 w-full" 
+              min="0"
+            />
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4">
+                {unit}
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {units.map((u) => (
+                <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setUnit(u)}>
+                  {u}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer">
-              {unit}
-              <ChevronDown className="ml-1 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {units.map((u) => (
-              <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setUnit(u)}>
-                {u}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
       <Card className="w-full">
         <CardHeader>
