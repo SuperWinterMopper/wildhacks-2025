@@ -14,8 +14,8 @@ const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.TileLayer),
     { ssr: false }
   );
-  
-const SimpleMap = () => {
+
+const SimpleMap = ({ children }) => {
     const mapRef = useRef(null);
     const latitude = 41.8781;
     const longitude = -87.6298;
@@ -28,6 +28,7 @@ const SimpleMap = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {/* Additional map layers or components can be added here */}
+          {children}
         </MapContainer>
     );
   };
