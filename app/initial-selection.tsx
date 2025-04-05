@@ -117,15 +117,10 @@ export default function DistanceSelector() {
           </CardContent>
         </Card>
       </div>
-<<<<<<< HEAD
-
       <div className="w-full text-5xl py-5">Starting from...</div>
       <div className="w-full flex gap-4">
         <Input type="text" placeholder="Enter a location" className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" />
       </div>
-      
-
-
       <div className="w-full text-5xl py-5">Prioritizing...</div>
       <div className="w-full flex gap-4">
         <Card className="w-1/2 text-3xl">
@@ -167,17 +162,11 @@ export default function DistanceSelector() {
           </CardContent>
         </Card>
       </div>
-
-
-      
-=======
         <div className="flex justify-center items-center w-full">
             <Button variant="outline" className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-70 h-15 text-3xl"> 
             Find me routes 
             </Button>
         </div>
->>>>>>> a715ce7523e76bc0370e8f6d2869d0d0ccc9d042
     </div>
   )
 }
-
