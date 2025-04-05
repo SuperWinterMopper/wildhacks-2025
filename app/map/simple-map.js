@@ -14,7 +14,7 @@ const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.TileLayer),
     { ssr: false }
   );
-
+  
 const SimpleMap = () => {
     const mapRef = useRef(null);
     const latitude = 41.8781;
