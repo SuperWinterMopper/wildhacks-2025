@@ -25,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <header className="text-7xl font-bold bg-gradient-to-r from-green-500 to-red-500 bg-clip-text text-transparent p-4">
+    GUAVA
+      </header>
       <body>
         <ThemeProvider
           attribute="class"
