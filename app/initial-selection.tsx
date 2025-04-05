@@ -23,7 +23,7 @@ export default function DistanceSelector() {
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 p-4 w-full">
-      <div className="w-full py-5">
+      <div className="w-full">
         <div className="text-5xl py-5">I want to...</div>
         <div className="flex items-center w-full">
           <DropdownMenu>
@@ -64,7 +64,7 @@ export default function DistanceSelector() {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
                 {unit}
-                <ChevronDown className="ml-1 h-4 w-4" />
+                <ChevronDown className="ml-1 h-4 w-4"/>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -77,7 +77,7 @@ export default function DistanceSelector() {
           </DropdownMenu>
         </div>
       </div>
-      <div className=" w-full py-5 text-5xl py-5">Prioritizing...</div>
+      <div className="w-full text-5xl py-5">Prioritizing...</div>
       <Card className="w-full !text-3xl">
         <CardHeader>
           <CardTitle>Scenery</CardTitle>
