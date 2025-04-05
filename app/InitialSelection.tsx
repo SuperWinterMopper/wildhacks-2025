@@ -8,19 +8,37 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from "@/components/ui/input"
 
 export default function DistanceSelector() {
-  const [distance, setDistance] = useState("5")
-  const [unit, setUnit] = useState("km")
+  const [distance, setDistance] = useState("5");
+  const [unit, setUnit] = useState("km");
+  const [travelType, setTravelType] = useState("cycle");
 
-  const units = ["km", "miles", "meters", "feet"]
+  const units = ["km", "miles", "meters", "feet"];
+  const travelTypes = ["cycle", "run"];
 
   return (
-    <div className="flex flex-wrap items-center gap-2 p-4">
+    <div className="flex flex-wrap items-center justify-center gap-2 p-4">
+      <div className="text-lg">I want to...</div>
       <div className="flex items-center">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="rounded-r-none border-r-0">
+                {travelType}
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {travelTypes.map((u) => (
+                <DropdownMenuItem key={u} onClick={() => setTravelType(u)}>
+                  {u}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         <Input
           type="number"
           value={distance}
           onChange={(e) => setDistance(e.target.value)}
-          className="w-16 rounded-r-none"
+          className="w-16 rounded-r-none rounded-l-none"
           min="0"
         />
         <DropdownMenu>
@@ -39,8 +57,6 @@ export default function DistanceSelector() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-      <div className="text-lg">I want to...</div>
     </div>
   )
 }
