@@ -24,18 +24,18 @@ export default function DistanceSelector() {
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 p-4 w-full">
       <div className="w-full py-5">
-        <div className="text-lg py-5">I want to...</div>
+        <div className="text-5xl py-5">I want to...</div>
         <div className="flex items-center w-full">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/4">
+              <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
                 {travelType}
                 <ChevronDown className="ml-1 h-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {travelTypes.map((u) => (
-                <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setTravelType(u)}>
+                <DropdownMenuItem className="cursor-pointer !text-3xl" key={u} onClick={() => setTravelType(u)}>
                   {u}
                 </DropdownMenuItem>
               ))}
@@ -45,31 +45,31 @@ export default function DistanceSelector() {
             type="number"
             value={distance}
             onChange={(e) => setDistance(e.target.value)}
-            className="rounded-r-none rounded-l-none flex-grow w-1/4"
+            className="rounded-r-none rounded-l-none flex-grow w-1/4 !text-3xl h-15"
             min="0"
           />
           <div className="relative flex-grow w-1/4">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none !text-3xl h-15">
               <span className="text-white">±</span>
             </div>
             <Input
               type="number"
               value={distanceRange}
               onChange={(e) => setDistanceRange(e.target.value)}
-              className="rounded-r-none rounded-l-none pl-7 w-full" 
+              className="rounded-r-none rounded-l-none pl-7 w-full !text-3xl h-15" 
               min="0"
             />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4">
+              <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
                 {unit}
                 <ChevronDown className="ml-1 h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {units.map((u) => (
-                <DropdownMenuItem className="cursor-pointer" key={u} onClick={() => setUnit(u)}>
+                <DropdownMenuItem className="cursor-pointer !text-3xl" key={u} onClick={() => setUnit(u)}>
                   {u}
                 </DropdownMenuItem>
               ))}
@@ -77,10 +77,11 @@ export default function DistanceSelector() {
           </DropdownMenu>
         </div>
       </div>
-      <Card className="w-full">
+      <div className=" w-full py-5 text-5xl py-5">Prioritizing...</div>
+      <Card className="w-full !text-3xl">
         <CardHeader>
           <CardTitle>Scenery</CardTitle>
-          <CardDescription>{scenery}</CardDescription>
+          <CardDescription className="text-2xl">{scenery}</CardDescription>
         </CardHeader>
         <CardContent>
           <Slider
@@ -92,14 +93,14 @@ export default function DistanceSelector() {
               setScenery(value[0]);
               console.log(scenery);
             }}
-            className={cn("w-[60%] bg-green-200 cursor-pointer")}
+            className={cn("w-[100%] cursor-pointer")}
           />
         </CardContent>
       </Card>
-      <Card className="w-full">
+      <Card className="w-full !text-3xl">
         <CardHeader>
           <CardTitle>Safety</CardTitle>
-          <CardDescription>{safety}</CardDescription>
+          <CardDescription className="text-2xl">{safety}</CardDescription>
         </CardHeader>
         <CardContent>
           <Slider
@@ -111,7 +112,7 @@ export default function DistanceSelector() {
               setSafety(value[0]);
               console.log(safety);
             }}
-            className={cn("w-[60%] bg-green-200 cursor-pointer")}
+            className={cn("w-[100%] cursor-pointer")}
           />
         </CardContent>
       </Card>
