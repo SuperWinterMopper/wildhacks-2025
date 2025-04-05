@@ -2,16 +2,21 @@
 
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
+import { Slider } from "@/components/ui/slider"
 
 export default function DistanceSelector() {
   const [distance, setDistance] = useState("5");
   const [unit, setUnit] = useState("km");
   const [travelType, setTravelType] = useState("cycle");
   const [distanceRange, setDistanceRange] = useState("0");
+  const [scenery, setScenery] = useState(3);
+  const [safety, setSafety] = useState(3);
+  
 
   const units = ["km", "miles", "meters", "feet"];
   const travelTypes = ["cycle", "run"];
@@ -42,13 +47,6 @@ export default function DistanceSelector() {
           className="w-30 rounded-r-none rounded-l-none"
           min="0"
         />
-        {/* <Input
-          type="number"
-          value={distanceRange}
-          onChange={(e) => setDistanceRange(e.target.value)}
-          className="w-30 rounded-r-none rounded-l-none"
-          min="0"
-        /> */}
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <span className="text-white">±</span>
@@ -77,6 +75,25 @@ export default function DistanceSelector() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle>Scenery</CardTitle>
+          <CardDescription>{scenery}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Slider
+            defaultValue={[scenery]}
+            max={5}
+            min={1}
+            step={1}
+            onValueChange={(value) => {
+              setScenery(value[0]);
+              console.log(scenery);
+            }}
+            className={cn("w-[60%] bg-green-200")}
+          />
+        </CardContent>
+      </Card>
     </div>
   )
 }
