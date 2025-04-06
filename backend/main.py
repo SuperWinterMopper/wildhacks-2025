@@ -1,54 +1,41 @@
-# TO RUN THIS BACKEND:
-# uvicorn main:app --reload --port 8000
-
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+import json
+from generate_routes import generate_routes, to_lat_lon
 import osmnx as ox
-from generate_routes import generate_routes
-
-app = FastAPI()
+import functions_framework
 
 G = ox.load_graphml("sarge7.5km.graphml")
 
-# Allow frontend access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@functions_framework.http
+def process(request):
 
-# class for input to guavaFinder()
-class RouteRequest(BaseModel):
-    distance: float
-    unit: str
-    travelType: str
-    scenery: int 
-    safety: int 
-    start_lat: float
-    start_lon: float
-
-@app.get("/guava")
-def guavaFinder_get():
-    return {"message": "Testing, response recieved from backend. Guava"}
-
-@app.post("/guava")
-def guavaFinder_post(request: RouteRequest): 
-
-    print(f"request.start_lat {request.start_lat}")
-    print(f"request.start_lon {request.start_lon}")
-    print(f"request.distance {request.distance}")
-
-    # routes = generate_routes(G, 
-    #                          request.start_lat, 
-    #                          request.start_lon,
-    #                          request.distance,
-    #                          8)
-
-    routes = generate_routes(G, source_lat=42.062365, source_lon=-87.677904, loop_distance=5, num_slices=8)
+    # Handle CORS preflight
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+        return ('', 204, headers)
     
-    print(f"THE RESULTING ROUTES ARE:{routes}")
-    return {
-        "message": routes
-    }
+    try:
+        data = request.get_json(silent=True) or {}
+
+        start_lat = float(data["start_lat"])
+        start_lon = float(data["start_lon"])
+        distance = float(data["distance"])
+
+        routes = generate_routes(G, start_lat, start_lon, distance, 8)
+
+        return (json.dumps(routes), 200, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*'
+        })
+    
+    except (TypeError, ValueError) as e:
+        # If any of the floats fail or args are missing
+        error_message = {"error": f"Invalid input: {str(e)}"}
+        return (json.dumps(error_message), 400, {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": '*'
+        })

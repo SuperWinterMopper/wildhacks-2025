@@ -16,9 +16,24 @@ const Polyline = dynamic(
   { ssr: false }
 );
 
+function GuavaMaps({ route, color }) {
+  return (
+    <div className="w-[400px] h-[300px]">
+      <SimpleMap>
+        <Polyline
+          positions={route}
+          color={color}
+          weight={5}
+          opacity={0.7}
+        />
+      </SimpleMap>
+    </div>
+  );
+}
+
 export default function MapPage() {
   const searchParams = useSearchParams();
-  const [routeParams, setRouteParams] = useState(null); 
+  const [routeParams, setRouteParams] = useState(null);
 
   const [response, setResponse] = useState<string | null>(null);
 
@@ -30,78 +45,81 @@ export default function MapPage() {
       const res = await fetch('http://localhost:8000/guava', {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(parsedState)  // Send the actual object, not the string
       });
-      
+
       const data = await res.json();
       setResponse(data.message);
       console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
-    setResponse('Failed to fetch from backend');
+      setResponse('Failed to fetch from backend');
+    }
   }
-}
 
   useEffect(() => {
-      const stateParam = searchParams.get('state');
-      console.log("searchParams is", searchParams);
-      console.log("stateparam is", stateParam);
-      if (!stateParam) {
-        console.error("No state parameter found");
-        return;
-      }
+    const stateParam = searchParams.get('state');
+    console.log("searchParams is", stateParam);
+    console.log("stateparam is", stateParam);
+    if (!stateParam) {
+      console.error("No state parameter found");
+      return;
+    }
 
-      // Parse the JSON string to an object first
-      const parsedState = JSON.parse(stateParam);
-      setRouteParams(parsedState);
-      console.log("parsedState is", parsedState);
-      guavaFinder(parsedState);
+    // Parse the JSON string to an object first
+    const parsedState = JSON.parse(stateParam);
+    setRouteParams(parsedState);
+    console.log("parsedState is", parsedState);
+    guavaFinder(parsedState);
   }, [searchParams]);
 
-  if(!routeParams || !response) {
+  if (!routeParams || !response) {
     return (
       <div>Loading...</div>
     )
   }
 
-return (
-  <div className="flex justify-center">
-    <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
-      <div className="flex w-full py-10">
-        <div className="flex w-1/2">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Starting Point</CardTitle>
-              <CardDescription>{routeParams.locationName}</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Distance</CardTitle>
-              <CardDescription>{`${routeParams.distance} ${routeParams.unit}`}</CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
+  return (
+    <div className="flex justify-center">
+      <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
+        <div className="flex w-full py-10">
+          <div className="flex w-1/2">
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Starting Point</CardTitle>
+                <CardDescription>{routeParams.locationName}</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Distance</CardTitle>
+                <CardDescription>{`${routeParams.distance} ${routeParams.unit}`}</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
 
-        {/* // BUTTON */}
-        <div className="w-full flex pr-4 object-left">
-          <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
-            <RotateCcwIcon className="h-25 w-25" />
-            Regenerate route
-          </Button>
-        </div>
+          <div className="flex flex-row gap-4 mb-8">
+            <GuavaMaps route={testRoute} color="red" />
+            <GuavaMaps route={testRoute} color="blue" />
+            <GuavaMaps route={testRoute} color="darkslategrey" />
+          </div>
+          <div className="flex flex-row gap-4 mb-8">
+            <GuavaMaps route={testRoute} color="darkorange" />
+            <GuavaMaps route={testRoute} color="deeppink" />
+            <GuavaMaps route={testRoute} color="darkturquoise" />
+          </div>
 
+        </div>
+        <SimpleMap>
+          <Polyline
+            positions={testRoute}
+            color="red"
+            weight={5}
+            opacity={0.7}
+          />
+        </SimpleMap>
       </div>
-      <SimpleMap>
-        <Polyline
-          positions={testRoute}
-          color="red"
-          weight={5}
-          opacity={0.7}
-        />
-      </SimpleMap>
-    </div>
-  </div >
-);
+    </div >
+  );
 }
