@@ -24,7 +24,7 @@ export default function DistanceSelector() {
   const [distanceRange, setDistanceRange] = useState("0");
   const [scenery, setScenery] = useState(3);
   const [safety, setSafety] = useState(3);
-  
+
   const [query, setQuery] = useState(""); // user input
   const [results, setResults] = useState<Array<{ label: string; x: number; y: number }>>([]);
   const [selected, setSelected] = useState<{
@@ -62,26 +62,26 @@ export default function DistanceSelector() {
           setResults([]);
           return;
         }
-  
+
         const res = await provider.search({ query });
         setResults(res);
       };
-  
+
       fetchResults();
     }, [query]);
-  
+
     return (
-      <div className="relative w-full flex flex-col items-start gap-2">
+      <div className="relative w-full flex flex-col items-center gap-2">
         <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)} // update user input
           placeholder="Enter a location"
           className={cn(
-            "h-16 w-1/2 !text-2xl !placeholder:text-3xl px-4 py-2"
+            "h-16 w-2/3 !text-2xl !placeholder:text-3xl px-4 py-2"
           )}
         />
-  
+
         {results.length > 0 && (
           <ul className="absolute top-full mt-1 w-1/2 bg-neutral-900 border border-gray-300 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
             {results.map((result, index) => (
@@ -102,16 +102,16 @@ export default function DistanceSelector() {
       </div>
     );
   }
-  
+
   return (
-    <div className="w-5/6 h-screen border-gray-500 border-2">
+    <div className="w-2/3 h-screen border-gray-500 border-2 rounded-3xl">
       <div className="flex flex-wrap items-center justify-center gap-2 p-4 w-full">
         <div className="w-full">
-          <div className="text-5xl py-5">I want to...</div>
-          <div className="flex items-center w-full">
+          <div className="text-5xl py-5 text-center">Today, I will...</div>
+          <div className="flex items-center justify-center w-2/3 mx-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
+                <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/3 !text-3xl h-15">
                   {travelType}
                   <ChevronDown className="ml-1 h-4" />
                 </Button>
@@ -128,11 +128,11 @@ export default function DistanceSelector() {
               type="number"
               value={distance}
               onChange={(e) => setDistance(e.target.value)}
-              className="rounded-r-none rounded-l-none flex-grow w-1/4 !text-3xl h-15"
+              className="rounded-r-none rounded-l-none flex-grow w-1/3 !text-3xl h-15"
               min="0"
             />
-            <div className="relative flex-grow w-1/4">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none !text-3xl h-15">
+            {/* <div className="relative flex-grow w-1/4">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none !text-3xl h-15">
                 <span className="text-white">±</span>
               </div>
               <Input
@@ -142,10 +142,10 @@ export default function DistanceSelector() {
                 className="rounded-r-none rounded-l-none pl-7 w-full !text-3xl h-15"
                 min="0"
               />
-            </div>
+            </div> */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
+                <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/3 !text-3xl h-15">
                   {unit}
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>
@@ -161,7 +161,7 @@ export default function DistanceSelector() {
           </div>
         </div>
 
-        <div className="w-full text-5xl py-5">starting from...</div>
+        {/* <div className="w-full text-5xl py-5 text-center">starting from...</div> */}
         {/* <div className="w-full flex gap-4">
           <Input
             type="text"
@@ -171,12 +171,12 @@ export default function DistanceSelector() {
             className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl"
           />
         </div> */}
+        {/* <div className="w-full flex justify-center">{LocationSearchBar()}</div> */}
 
-        {LocationSearchBar()}
 
-        <div className="w-full text-5xl py-5">prioritizing...</div>
-        <div className="w-full flex gap-4">
-          <Card className="w-1/2 text-3xl">
+        <div className="w-full text-center text-5xl py-5">Prioritizing...</div>
+        <div className="w-2/3 flex flex-col justify-center gap-4">
+          <Card className="text-3xl">
             <CardHeader>
               <CardTitle>Scenery</CardTitle>
               <CardDescription className="text-2xl">{scenery}</CardDescription>
@@ -195,7 +195,7 @@ export default function DistanceSelector() {
               />
             </CardContent>
           </Card>
-          <Card className="w-1/2 !text-3xl">
+          <Card className="text-3xl">
             <CardHeader>
               <CardTitle>Safety</CardTitle>
               <CardDescription className="text-2xl">{safety}</CardDescription>
@@ -215,13 +215,13 @@ export default function DistanceSelector() {
             </CardContent>
           </Card>
         </div>
-        <div className="flex justify-center items-center w-full">
+        <div className="flex justify-center items-center w-full py-5">
           <Button
             onClick={handleSubmit}
             variant="outline"
-            className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-70 h-15 text-3xl"
+            className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-50 h-20 text-4xl"
           >
-            Find me routes
+            Go
           </Button>
         </div>
       </div>
