@@ -3,6 +3,7 @@ import networkx as nx
 import math
 from custom_weights import weight
 from latlonutil import haversine_distance, calculate_bearing
+from name_route import name_route
 
 # --- CONFIGURATION ---
 THRESH = 6.5 # percent
@@ -161,7 +162,7 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
                 paths.append({
                     "nodes": to_lat_lon(G, total_path),
                     "distance": total_distance,
-                    "name": "filler name",
+                    "name": name_route(G, total_path, total_distance),
                 })
                 break
     
@@ -175,10 +176,13 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
 
 #     G = ox.load_graphml(GRAPHML_FILE)
 
-#     routes = generate_routes(G, 42.062365, -87.677904, loop_distance=16000, num_slices=10)
+#     routes = generate_routes(G, 42.062365, -87.677904, loop_distance=5000, num_slices=8)
 
-#     # Plot graph with route
-#     for path in routes:
-#         ox.plot_graph_route(G, path["nodes"], route_linewidth=2, node_size=0)
+#     for route in routes:
+#         print("\n", route)
+
+#     # # Plot graph with route
+#     # for path in routes:
+#     #     ox.plot_graph_route(G, path["nodes"], route_linewidth=2, node_size=0)
     
 #     #print(paths)
