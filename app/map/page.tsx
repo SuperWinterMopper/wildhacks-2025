@@ -41,7 +41,6 @@ export default function MapPage() {
   const [selectedMap, setSelectedMap] = useState<number | null>(null);
 
   const guavaFinder = async (parsedState) => {
-    console.log("HEYYY IN guavaFinder, the parsedState is", parsedState);
     try {
       console.log("Guava finder running...");
       // Now send the parsed object to the backend
@@ -64,8 +63,10 @@ export default function MapPage() {
         body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
       });
 
+      console.log("starting request")
       const data = await res.json();
-      setResponse(data.message);
+      console.log(data[0]["nodes"])
+      setResponse(data);
       console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
       setResponse('Failed to fetch from backend');
@@ -154,7 +155,9 @@ export default function MapPage() {
               </CardHeader>
             </Card>
           </div>
-        </div>
+
+          {/* {response == null ? <></> :
+           response[0]["nodes"].map((n) => {<p>n</p>})} */}
 
           <div className="flex flex-row gap-4 mb-8">
             {mapData.slice(0, 3).map((id, route, color) => (
@@ -183,14 +186,15 @@ export default function MapPage() {
             <GuavaMaps route={testRoute} color="darkturquoise" /> */}
           </div>
 
-        <SimpleMap>
+        </div>
+        {/* {response == null ? <></> : <SimpleMap>
           <Polyline
-            positions={testRoute}
+            positions={response[0]["nodes"]}
             color="red"
             weight={5}
             opacity={0.7}
           />
-        </SimpleMap>
+        </SimpleMap>} */}
       </div>
     </div >
   );
