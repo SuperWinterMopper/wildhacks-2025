@@ -1,3 +1,7 @@
+# TO RUN THIS BACKEND:
+# uvicorn main:app --reload --port 8000
+
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -19,7 +23,8 @@ class RouteRequest(BaseModel):
     travelType: str
     scenery: int 
     safety: int 
-
+    start_lat: float
+    start_lon: float
 
 @app.get("/guava")
 def guavaFinder_get():
@@ -30,10 +35,12 @@ def guavaFinder_post(request: RouteRequest):
 
     # temporary code.
     
-    # Josh and Mirai, delete this code and add 
+    # Josh and Mirai, delete this code and add your code.
+    # the request has the variables listed in the class RouteRequest listed above
+    # access them via `request.travelType``, `request.unit`, etc
     route_type = "Scenic" if request.scenery > 3 else "Standard"
     safety_level = "High" if request.safety > 3 else "Normal"
 
     return {
-        "message": [route_type, safety_level, request.travelType, request.unit, request.distance]
+        "message": [route_type, safety_level, request.travelType, request.unit, request.distance, request.start_lat, request.start_lon]
     }
