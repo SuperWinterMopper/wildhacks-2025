@@ -1,19 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import SimpleMap from "@/app/map/simple-map";
 import testRoute from "@/app/map/test-route";
 import dynamic from "next/dynamic";
 import { Card, CardHeader, CardDescription, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcwIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const Polyline = dynamic(
   () => import("react-leaflet").then((mod) => mod.Polyline),
   { ssr: false }
 );
 
-export default function MapPage({testRoute: JSON}) {
+export default function MapPage() {
+  const searchParams = useSearchParams();
+  const [routeParams, setRouteParams] = useState(null);
+
+  useEffect(() => {
+    const stateParam = searchParams.get("state");
+    if(stateParam) {
+      try {
+
+      } catch (error) {
+        console.error()
+      }
+    }
+  })
+  
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">

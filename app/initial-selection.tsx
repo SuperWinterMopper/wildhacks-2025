@@ -19,6 +19,7 @@ export default function DistanceSelector() {
   const [distanceRange, setDistanceRange] = useState("0");
   const [scenery, setScenery] = useState(3);
   const [safety, setSafety] = useState(3);
+  const [startingLocation, setStartingLocation] = useState("")
 
   const units = ["km", "miles", "meters", "feet"];
   const travelTypes = ["cycle", "run"];
@@ -94,12 +95,15 @@ export default function DistanceSelector() {
             </DropdownMenu>
           </div>
         </div>
-
-
-
         <div className="w-full text-5xl py-5">Starting from...</div>
         <div className="w-full flex gap-4">
-          <Input type="text" placeholder="Enter a location" className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" />
+          <Input 
+            type="text" 
+            value={startingLocation}
+            onChange={(e) => {setStartingLocation(e.target.value)}}
+            placeholder="Enter a location" 
+            className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" 
+          />
         </div>
         <div className="w-full text-5xl py-5">Prioritizing...</div>
         <div className="w-full flex gap-4">
