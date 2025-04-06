@@ -19,16 +19,38 @@ export default function MapPage() {
   const searchParams = useSearchParams();
   const [routeParams, setRouteParams] = useState(null);
 
-  useEffect(() => {
-    const stateParam = searchParams.get("state");
-    if (stateParam) {
-      try {
+  const [response, setResponse] = useState<string | null>(null);
 
-      } catch (error) {
-        console.error()
-      }
+  const guavaFinder = async () => {
+    try {
+      console.log("Guava finder running...");
+      const res = await fetch('http://localhost:8000/hello');
+      const data = await res.json();
+      setResponse(data.message);
+      console.log("yo guavaFinder has finished", data.message);
+    } catch (error) {
+      console.error('Error calling backend:', error);
+      setResponse('Failed to fetch from backend');
     }
-  })
+  }
+
+  useEffect(() => {
+    guavaFinder();
+  }, []);
+
+
+  // useEffect(() => {
+  //   const stateParam = searchParams.get("state");
+  //   if(stateParam) {
+  //     try {
+  //       guavaFinder();
+  //     } catch (error) {
+  //       console.error(error);
+
+  //     }
+  //   }
+  // })
+
 
   return (
     <div className="flex justify-center">
