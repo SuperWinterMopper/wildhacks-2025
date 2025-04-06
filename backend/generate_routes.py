@@ -1,6 +1,5 @@
 import osmnx as ox
 import networkx as nx
-import numpy as np
 import math
 from custom_weights import weight
 from latlonutil import haversine_distance, calculate_bearing
@@ -13,6 +12,12 @@ MAX_DIST_SCALAR = 0.3
 
 def haversine_with_graph(G):
     return lambda u, v: haversine_distance(u, v, G)
+
+def linspace(start, stop, num):
+    if num == 1:
+        return [start]
+    step = (stop - start) / (num - 1)
+    return [start + i * step for i in range(num)]
 
 def destination_point(G, lat1, lon1, d, theta):
 
@@ -34,7 +39,7 @@ def destination_point(G, lat1, lon1, d, theta):
     lat2 = math.degrees(lat2)
     lon2 = math.degrees(lon2)
 
-    return ox.distance.nearest_nodes(G, lon2, lat2)
+    return ox.distance.nearest_nodes(G, float(lon2), float(lat2))
 
 
 def nodes_in_slice(G, start_node, angle_min, angle_max, distance_min, distance_max):
@@ -94,7 +99,7 @@ def perpendicular_point(G, lat1, lon1, lat2, lon2, distance_km):
     # Convert radians back to degrees
     lat_d, lon_d = math.degrees(lat_d), math.degrees(lon_d)
 
-    return ox.distance.nearest_nodes(G, lon_d, lat_d)
+    return ox.distance.nearest_nodes(G, float(lon_d), float(lat_d))
 
 
 def get_path_distance(G, path):
@@ -105,8 +110,8 @@ def get_path_distance(G, path):
     return distance
 
 
-def generate_routes(G, source_lat, source_lon, loop_distance, num_slices, thresh=THRESH):
-    point_1 = ox.distance.nearest_nodes(G, source_lon, source_lat)
+def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thresh=THRESH):
+    point_1 = ox.distance.nearest_nodes(G, float(source_lon), float(source_lat))
 
     min_dist = MIN_DIST_SCALAR * loop_distance
     max_dist = MAX_DIST_SCALAR * loop_distance
@@ -115,7 +120,7 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices, thresh
     lat1 = G.nodes[point_1]['y']
     
     paths = []
-    for bearing in np.linspace(0, 360, num_slices):
+    for bearing in linspace(0, 360, num_slices):
 
         point_2 = nodes_in_slice(G, point_1, bearing, bearing + 360/num_slices, min_dist, max_dist)
         if point_2 == None:
@@ -127,7 +132,7 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices, thresh
         path_1_to_2 = nx.astar_path(G, point_1, point_2, heuristic=haversine_with_graph(G), weight='length')
 
         last_points = [-1, -1, -1, -1, -2]
-        for km in np.linspace(0, loop_distance/2, 15):
+        for km in linspace(0, loop_distance/2, 15):
             point_3 = perpendicular_point(G, lat1, lon1, lat2, lon2, km)
             if len(set(last_points)) <= 1:
                 break
@@ -150,7 +155,11 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices, thresh
             total_distance = get_path_distance(G, total_path)
 
             if abs(loop_distance - total_distance) < thresh*0.01*loop_distance or total_distance > loop_distance:
-                paths.append(path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:])
+                paths.append({
+                    "nodes": path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:],
+                    "distance": total_distance,
+                    "name": "filler name",
+                })
                 break
     
     # Returns paths
@@ -167,6 +176,6 @@ if __name__ == "__main__":
 
     # Plot graph with route
     for path in routes:
-        ox.plot_graph_route(G, path, route_linewidth=2, node_size=0)
+        ox.plot_graph_route(G, path["nodes"], route_linewidth=2, node_size=0)
     
     #print(paths)

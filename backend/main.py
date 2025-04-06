@@ -1,46 +1,24 @@
-# TO RUN THIS BACKEND:
-# uvicorn main:app --reload --port 8000
-
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import osmnx as ox
+import json
 from generate_routes import generate_routes
-
-app = FastAPI()
+import osmnx as ox
+import functions_framework
 
 G = ox.load_graphml("sarge7.5km.graphml")
 
-# Allow frontend access
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+@functions_framework.http
+def process(request):
+    try:
+        data = request.get_json(silent=True) or {}
 
-# class for input to guavaFinder()
-class RouteRequest(BaseModel):
-    distance: float
-    unit: str
-    travelType: str
-    scenery: int 
-    safety: int 
-    start_lat: float
-    start_lon: float
+        start_lat = float(data["start_lat"])
+        start_lon = float(data["start_lon"])
+        distance = float(data["distance"])
 
-@app.get("/guava")
-def guavaFinder_get():
-    return {"message": "Testing, response recieved from backend. Guava"}
+        routes = generate_routes(G, start_lat, start_lon, distance, 8)
 
-@app.post("/guava")
-def guavaFinder_post(request: RouteRequest): 
-
-    routes = generate_routes(G, 
-                             request.start_lat, 
-                             request.start_lon,
-                             request.distance,)
-
-    return {
-        "message": routes
-    }
+        return (json.dumps(routes), 200, {"Content-Type": "application/json"})
+    
+    except (TypeError, ValueError) as e:
+        # If any of the floats fail or args are missing
+        error_message = {"error": f"Invalid input: {str(e)}"}
+        return (json.dumps(error_message), 400, {"Content-Type": "application/json"})
