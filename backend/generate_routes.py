@@ -24,7 +24,6 @@ def linspace(start, stop, num):
     return [start + i * step for i in range(num)]
 
 def destination_point(G, lat1, lon1, d, theta):
-
     # Convert latitude, longitude, and bearing to radians
     lat1 = math.radians(lat1)
     lon1 = math.radians(lon1)
