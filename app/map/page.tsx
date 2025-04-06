@@ -82,8 +82,8 @@ export default function MapPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
-        // body: input,
+        // body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
+        body: input,
       });
 
       const data = await res.json();
