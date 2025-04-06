@@ -17,7 +17,18 @@ const Polyline = dynamic(
   { ssr: false }
 );
 
-function GuavaMaps({ route, color, id, onClick }: {color: string, id: number}) {
+function GuavaMaps({ route, color, id, onClick }: {
+  route: any[],
+  color: string, 
+  id: number,
+  onClick: (id: number) => void
+}) {
+  console.log("this is GuavaMaps, color", color)
+  console.log("this is GuavaMaps, id", id)
+  
+  const positions = route.map(coord => [coord[0], coord[1]]);
+  console.log("this is GuavaMaps, route", positions)
+
   return (
     <div 
       className="w-[400px] h-[300px]"
@@ -25,7 +36,7 @@ function GuavaMaps({ route, color, id, onClick }: {color: string, id: number}) {
     >
       <SimpleMap>
         <Polyline
-          positions={route}
+          positions={positions}
           color={color}
           weight={5}
           opacity={0.7}
@@ -36,10 +47,17 @@ function GuavaMaps({ route, color, id, onClick }: {color: string, id: number}) {
 }
 
 export default function MapPage() {
+  type RouteData = { //return type of backend
+    nodes: Array<any>; // or more specifically the type of nodes if known
+    distance: number;
+    name: string;
+  }
+  type RoutesCollection = RouteData[];  
+
   const searchParams = useSearchParams();
   const [routeParams, setRouteParams] = useState(null);
-  const [response, setResponse] = useState<string | null>(null);
   const [selectedMap, setSelectedMap] = useState<number | null>(null);
+  const [response, setResponse] = useState<RoutesCollection | null>(null);
 
   const guavaFinder = async (parsedState) => {
     try {
@@ -108,39 +126,40 @@ export default function MapPage() {
   };
 
   const lineColors = ["red", "blue", "darkslategrey", "darkorange", "deeppink","darkturquoise"]
-
-  const mapData = [
-    { id: 1, route: testRoute, color: "red" },
-    { id: 2, route: testRoute, color: "blue" },
-    { id: 3, route: testRoute, color: "darkslategrey" },
-    { id: 4, route: testRoute, color: "darkorange" },
-    { id: 5, route: testRoute, color: "deeppink" },
-    { id: 6, route: testRoute, color: "darkturquoise" }
-  ];
-
+  const mapData = response.map((item, index) => {
+    return {
+      id: index + 1, // Adding 1 to make IDs start at 1 instead of 0
+      nodes: item.nodes, // Assuming each item in response has route data
+      distance: item.distance,
+      name: item.name,
+      color: lineColors[index % lineColors.length] // Cycle through colors if there are more routes than colors
+    };
+  });  
+  
   if(selectedMap !== null) {
     const selectedMapData = mapData.find(map => map.id === selectedMap);
+    console.log("selected map is", selectedMapData);
 
     return (
-      // <div className="flex flex-col items-center justify-center h-screen">
-      //   <div className="w-[90vw] h-[80vh] mb-4">
-      //     <SimpleMap>
-      //       <Polyline
-      //         positions={selectedMapData.route}
-      //         color={selectedMapData.color}
-      //         weight={5}
-      //         opacity={0.7}
-      //       />
-      //     </SimpleMap>
-      //   </div>
-      //   <Button onClick={handleBackToGrid} className="mt-4">
-      //     <RotateCcwIcon className="mr-2 h-4 w-4" /> Back to Grid
-      //   </Button>
-      // </div>
-      <div>CLICKED ON MAP!!</div>
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-[90vw] h-[80vh] mb-4">
+          <SimpleMap>
+            <Polyline
+              positions={selectedMapData.nodes}
+              color={selectedMapData.color}
+              weight={5}
+              opacity={0.7}
+            />
+          </SimpleMap>
+        </div>
+        <Button onClick={handleBackToGrid} className="mt-4">
+          <RotateCcwIcon className="mr-2 h-4 w-4" /> Back to Grid
+        </Button>
+      </div>
+      // <div>CLICKED ON MAP!!</div>
     );
-  }
-
+  }  
+  
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
@@ -162,11 +181,12 @@ export default function MapPage() {
         </div>
 
           <div className="flex flex-row gap-4 mb-8">
-            {mapData.slice(0, 3).map((id, route, color) => (
+            {mapData.slice(0, 3).map((item) => (
               <GuavaMaps 
-                route={route}
-                color={color}
-                id={id}
+                key={item.id}
+                route={item.nodes} // Use the nodes property from your data
+                color={item.color}
+                id={item.id}
                 onClick={handleMapClick}
               />
             ))}
@@ -174,7 +194,7 @@ export default function MapPage() {
             <GuavaMaps route={testRoute} color="blue" />
             <GuavaMaps route={testRoute} color="darkslategrey" /> */}
           </div>
-          <div className="flex flex-row gap-4 mb-8">
+          {/* <div className="flex flex-row gap-4 mb-8">
             {mapData.slice(3, 6).map((id, route, color) => (
                 <GuavaMaps 
                   route={route}
@@ -183,11 +203,10 @@ export default function MapPage() {
                   onClick={handleMapClick}
               />
             ))}
-            {/* <GuavaMaps route={testRoute} color="darkorange" />
+            <GuavaMaps route={testRoute} color="darkorange" />
             <GuavaMaps route={testRoute} color="deeppink" />
-            <GuavaMaps route={testRoute} color="darkturquoise" /> */}
-          </div>
-
+            <GuavaMaps route={testRoute} color="darkturquoise" />
+          </div> */}
       </div>
     </div >
   );
