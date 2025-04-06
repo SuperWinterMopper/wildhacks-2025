@@ -18,7 +18,7 @@ const Polyline = dynamic(
 
 export default function MapPage() {
   const searchParams = useSearchParams();
-  const [routeParams, setRouteParams] = useState(null);
+  const [routeParams, setRouteParams] = useState(null); 
 
   const [response, setResponse] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ export default function MapPage() {
       const res = await fetch('http://localhost:8000/guava', {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', 
         },
         body: JSON.stringify(parsedState)  // Send the actual object, not the string
       });
@@ -44,6 +44,7 @@ export default function MapPage() {
 
   useEffect(() => {
       const stateParam = searchParams.get('state');
+      console.log("searchParams is", stateParam);
       console.log("stateparam is", stateParam);
       if (!stateParam) {
         console.error("No state parameter found");
@@ -52,8 +53,16 @@ export default function MapPage() {
 
       // Parse the JSON string to an object first
       const parsedState = JSON.parse(stateParam);
+      setRouteParams(parsedState);
+      console.log("parsedState is", parsedState);
       guavaFinder(parsedState);
   }, [searchParams]);
+
+  if(!routeParams || !response) {
+    return (
+      <div>Loading...</div>
+    )
+  }
 
 return (
   <div className="flex justify-center">
@@ -63,13 +72,13 @@ return (
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Starting Point</CardTitle>
-              <CardDescription>Sargent Hall</CardDescription>
+              <CardDescription>{routeParams.locationName}</CardDescription>
             </CardHeader>
           </Card>
           <Card className="w-full">
             <CardHeader>
               <CardTitle>Distance</CardTitle>
-              <CardDescription>5mi</CardDescription>
+              <CardDescription>{`${routeParams.distance} ${routeParams.unit}`}</CardDescription>
             </CardHeader>
           </Card>
         </div>
@@ -92,8 +101,6 @@ return (
         />
       </SimpleMap>
     </div>
-
   </div >
-
 );
 }
