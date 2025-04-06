@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
 // import LocationSearchBar from "@/app/geosearch"
 import { OpenStreetMapProvider } from "leaflet-geosearch";
+import convert from "./unit-converter"
 
 
 export default function DistanceSelector() {
@@ -23,8 +24,7 @@ export default function DistanceSelector() {
   const [distanceRange, setDistanceRange] = useState("0");
   const [scenery, setScenery] = useState(3);
   const [safety, setSafety] = useState(3);
-  const [startingLocation, setStartingLocation] = useState("")
-
+  
   const [query, setQuery] = useState(""); // user input
   const [results, setResults] = useState<Array<{ label: string; x: number; y: number }>>([]);
   const [selected, setSelected] = useState<{
@@ -33,12 +33,13 @@ export default function DistanceSelector() {
     y: number;
   } | null>(null);
 
-  const units = ["km", "miles", "meters", "feet"];
+  const units = ["km", "miles", "meters"];
   const travelTypes = ["cycle", "run"];
 
   const handleSubmit = () => {
+
     const stateParam = JSON.stringify({
-      distance: distance,
+      distance: convert(unit, Number(distance)),
       unit: unit,
       travelType: travelType,
       distanceRange: distanceRange,
@@ -46,6 +47,7 @@ export default function DistanceSelector() {
       safety: safety,
       start_lat: selected?.y,
       start_lon: selected?.x,
+      locationName: selected?.label
     });
 
     const encodedState = encodeURIComponent(stateParam);

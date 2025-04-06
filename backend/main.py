@@ -34,10 +34,7 @@ def guavaFinder_get():
     return {"message": "Testing, response recieved from backend. Guava"}
 
 @app.post("/guava")
-def guavaFinder_post(request: RouteRequest):
-
-    route_type = "Scenic" if request.scenery > 3 else "Standard"
-    safety_level = "High" if request.safety > 3 else "Normal"
+def guavaFinder_post(request: RouteRequest): 
 
     routes = generate_routes(G, 
                              request.start_lat, 
