@@ -17,18 +17,18 @@ export default function MapPage({testRoute: JSON}) {
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
         <div className="flex w-full py-10">
           <div className="flex w-1/2">
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle>Starting Point</CardTitle>
-                  <CardDescription>Sargent Hall</CardDescription>
-                </CardHeader>
-              </Card>
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle>Distance</CardTitle>
-                  <CardDescription>5mi</CardDescription>
-                </CardHeader>
-              </Card>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Starting Point</CardTitle>
+                <CardDescription>Sargent Hall</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Distance</CardTitle>
+                <CardDescription>5mi</CardDescription>
+              </CardHeader>
+            </Card>
           </div>
           <div className="w-1/2 bg-green">
             <p>button on this side</p>
