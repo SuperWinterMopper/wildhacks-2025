@@ -53,21 +53,20 @@ export default function MapPage() {
       // });
 
       // NEW REQUEST TO GOOGLE CLOUD
-      const proxyUrl = 'http://localhost:8080/';
       const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
-      const res = await fetch(proxyUrl + targetUrl, {
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
+        // body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
+        body: JSON.stringify(parsedState),
       });
 
-      console.log("starting request")
       const data = await res.json();
-      console.log(data[0]["nodes"])
+      console.log("the size of the array returned is", data.length);
+      console.log("yo guavaFinder has finished", data);
       setResponse(data);
-      console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
       setResponse('Failed to fetch from backend');
     }
@@ -155,9 +154,7 @@ export default function MapPage() {
               </CardHeader>
             </Card>
           </div>
-
-          {/* {response == null ? <></> :
-           response[0]["nodes"].map((n) => {<p>n</p>})} */}
+        </div>
 
           <div className="flex flex-row gap-4 mb-8">
             {mapData.slice(0, 3).map((id, route, color) => (
@@ -186,15 +183,6 @@ export default function MapPage() {
             <GuavaMaps route={testRoute} color="darkturquoise" /> */}
           </div>
 
-        </div>
-        {/* {response == null ? <></> : <SimpleMap>
-          <Polyline
-            positions={response[0]["nodes"]}
-            color="red"
-            weight={5}
-            opacity={0.7}
-          />
-        </SimpleMap>} */}
       </div>
     </div >
   );
