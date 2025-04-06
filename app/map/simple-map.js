@@ -29,6 +29,7 @@ const SimpleMap = ({ children }) => {
           />
           {/* Additional map layers or components can be added here */}
           {children}
+          <SearchControl/>
         </MapContainer>
     );
   };

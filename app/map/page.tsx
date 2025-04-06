@@ -16,6 +16,21 @@ const Polyline = dynamic(
   { ssr: false }
 );
 
+function GuavaMaps({ route, color }) {
+  return (
+    <div className="w-[400px] h-[300px]">
+      <SimpleMap>
+        <Polyline
+          positions={route}
+          color={color}
+          weight={5}
+          opacity={0.7}
+        />
+      </SimpleMap>
+    </div>
+  );
+}
+
 export default function MapPage() {
   const searchParams = useSearchParams();
   const [routeParams, setRouteParams] = useState(null);
@@ -33,67 +48,71 @@ export default function MapPage() {
         },
         body: JSON.stringify(parsedState)  // Send the actual object, not the string
       });
-      
+
       const data = await res.json();
       setResponse(data.message);
       console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
-    setResponse('Failed to fetch from backend');
+      setResponse('Failed to fetch from backend');
+    }
   }
-}
 
   useEffect(() => {
-      const stateParam = searchParams.get('state');
-      console.log("stateparam is", stateParam);
-      if (!stateParam) {
-        console.error("No state parameter found");
-        return;
-      }
+    const stateParam = searchParams.get('state');
+    console.log("stateparam is", stateParam);
+    if (!stateParam) {
+      console.error("No state parameter found");
+      return;
+    }
 
-      // Parse the JSON string to an object first
-      const parsedState = JSON.parse(stateParam);
-      guavaFinder(parsedState);
+    // Parse the JSON string to an object first
+    const parsedState = JSON.parse(stateParam);
+    guavaFinder(parsedState);
   }, [searchParams]);
 
-return (
-  <div className="flex justify-center">
-    <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
-      <div className="flex w-full py-10">
-        <div className="flex w-1/2">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Starting Point</CardTitle>
-              <CardDescription>Sargent Hall</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Distance</CardTitle>
-              <CardDescription>5mi</CardDescription>
-            </CardHeader>
-          </Card>
+  return (
+    <div className="flex justify-center">
+      <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
+        <div className="flex w-full py-10">
+          <div className="flex w-1/2">
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Starting Point</CardTitle>
+                <CardDescription>Sargent Hall</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="w-full">
+              <CardHeader>
+                <CardTitle>Distance</CardTitle>
+                <CardDescription>5mi</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+
+          {/* // BUTTON */}
+          <div className="w-full flex pr-4 object-left">
+            <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
+              <RotateCcwIcon className="h-25 w-25" />
+              Regenerate route
+            </Button>
+          </div>
+
         </div>
 
-        {/* // BUTTON */}
-        <div className="w-full flex pr-4 object-left">
-          <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
-            <RotateCcwIcon className="h-25 w-25" />
-            Regenerate route
-          </Button>
+        <div className="flex flex-row gap-4 mb-8">
+          <GuavaMaps route={testRoute} color="red" />
+          <GuavaMaps route={testRoute} color="blue" />
+          <GuavaMaps route={testRoute} color="darkslategrey" />
+        </div>
+        <div className="flex flex-row gap-4 mb-8">
+          <GuavaMaps route={testRoute} color="darkorange" />
+          <GuavaMaps route={testRoute} color="deeppink" />
+          <GuavaMaps route={testRoute} color="darkturquoise" />
         </div>
 
       </div>
-      <SimpleMap>
-        <Polyline
-          positions={testRoute}
-          color="red"
-          weight={5}
-          opacity={0.7}
-        />
-      </SimpleMap>
-    </div>
 
-  </div >
+    </div >
 
-);
+  );
 }
