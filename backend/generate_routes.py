@@ -15,7 +15,6 @@ def haversine_with_graph(G):
     return lambda u, v: haversine_distance(u, v, G)
 
 def destination_point(G, lat1, lon1, d, theta):
-
     # Convert latitude, longitude, and bearing to radians
     lat1 = math.radians(lat1)
     lon1 = math.radians(lon1)
@@ -150,23 +149,27 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices, thresh
             total_distance = get_path_distance(G, total_path)
 
             if abs(loop_distance - total_distance) < thresh*0.01*loop_distance or total_distance > loop_distance:
-                paths.append(path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:])
+                paths.append({
+                    "nodes": path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:],
+                    "distance": total_distance,
+                    "name": "filler name",
+                })
                 break
     
     # Returns paths
     return paths
 
 
-if __name__ == "__main__":
-    SOURCE_LATLON = (42.062365, -87.677904)
-    GRAPHML_FILE = "sarge7.5km.graphml"
+# if __name__ == "__main__":
+#     SOURCE_LATLON = (42.062365, -87.677904)
+#     GRAPHML_FILE = "sarge7.5km.graphml"
 
-    G = ox.load_graphml(GRAPHML_FILE)
+#     G = ox.load_graphml(GRAPHML_FILE)
 
-    routes = generate_routes(G, 42.062365, -87.677904, loop_distance=16000, num_slices=10)
+#     routes = generate_routes(G, 42.062365, -87.677904, loop_distance=16000, num_slices=10)
 
-    # Plot graph with route
-    for path in routes:
-        ox.plot_graph_route(G, path, route_linewidth=2, node_size=0)
+#     # Plot graph with route
+#     for path in routes:
+#         ox.plot_graph_route(G, path, route_linewidth=2, node_size=0)
     
-    #print(paths)
+#     #print(paths)

@@ -37,9 +37,9 @@ export default function DistanceSelector() {
   const travelTypes = ["cycle", "run"];
 
   const handleSubmit = () => {
-
+    const converted_distance = convert(unit, Number(distance));
     const stateParam = JSON.stringify({
-      distance: convert(unit, Number(distance)),
+      distance: converted_distance,
       unit: unit,
       travelType: travelType,
       distanceRange: distanceRange,
@@ -51,6 +51,7 @@ export default function DistanceSelector() {
     });
 
     const encodedState = encodeURIComponent(stateParam);
+    console.log(encodedState);
     router.push(`/map?state=${encodedState}`);
   }
 

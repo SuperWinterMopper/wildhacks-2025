@@ -23,6 +23,7 @@ export default function MapPage() {
   const [response, setResponse] = useState<string | null>(null);
 
   const guavaFinder = async (parsedState) => {
+    console.log("HEYYY IN guavaFinder, the parsedState is", parsedState);
     try {
       console.log("Guava finder running...");
       // Now send the parsed object to the backend
@@ -44,7 +45,7 @@ export default function MapPage() {
 
   useEffect(() => {
       const stateParam = searchParams.get('state');
-      console.log("searchParams is", stateParam);
+      console.log("searchParams is", searchParams);
       console.log("stateparam is", stateParam);
       if (!stateParam) {
         console.error("No state parameter found");

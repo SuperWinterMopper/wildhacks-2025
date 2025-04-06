@@ -36,11 +36,19 @@ def guavaFinder_get():
 @app.post("/guava")
 def guavaFinder_post(request: RouteRequest): 
 
-    routes = generate_routes(G, 
-                             request.start_lat, 
-                             request.start_lon,
-                             request.distance,)
+    print(f"request.start_lat {request.start_lat}")
+    print(f"request.start_lon {request.start_lon}")
+    print(f"request.distance {request.distance}")
 
+    # routes = generate_routes(G, 
+    #                          request.start_lat, 
+    #                          request.start_lon,
+    #                          request.distance,
+    #                          8)
+
+    routes = generate_routes(G, source_lat=42.062365, source_lon=-87.677904, loop_distance=5, num_slices=8)
+    
+    print(f"THE RESULTING ROUTES ARE:{routes}")
     return {
         "message": routes
     }
