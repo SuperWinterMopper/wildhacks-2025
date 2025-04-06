@@ -18,9 +18,9 @@ const MapContainer = dynamic(
 
 const SimpleMap = ({ children }) => {
     const mapRef = useRef(null);
-    const latitude = 41.8781;
-    const longitude = -87.6298;
-  
+    const latitude = 42.05879;
+    const longitude = -87.67553;
+
     return ( 
         <MapContainer center={[latitude, longitude]} zoom={13} ref={mapRef} className="w-full h-full">
           <TileLayer
