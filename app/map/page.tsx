@@ -22,20 +22,43 @@ export default function MapPage() {
 
   const [response, setResponse] = useState<string | null>(null);
 
-  const guavaFinder = async () => {
+  // const guavaFinder = async () => {
+  //   try {
+  //     console.log("Guava finder running...");
+
+  //     const stateParam = searchParams.get('state');
+
+  //     if (!stateParam) {
+  //       console.error("No state parameter found");
+  //       return;
+  //     }
+
+  //     // Parse the JSON string to an object first
+  //     const parsedState = JSON.parse(stateParam);
+
+  //     // Now send the parsed object to the backend
+  //     const res = await fetch('http://localhost:8000/guava', {
+  //       method: "POST",
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(parsedState)  // Send the actual object, not the string
+  //     });
+
+  //     const data = await res.json();
+  //     setResponse(data.message);
+  //     console.log("yo guavaFinder has finished", data.message);
+  //   } catch (error) {
+  //     console.log("yo guavaFinder has finished", data);
+  //   } catch (error) {
+  //     console.error('Error calling backend:', error);
+  //     setResponse('Failed to fetch from backend');
+  //   }
+  // }
+
+  const guavaFinder = async (parsedState) => {
     try {
       console.log("Guava finder running...");
-
-      const stateParam = searchParams.get('state');
-
-      if (!stateParam) {
-        console.error("No state parameter found");
-        return;
-      }
-
-      // Parse the JSON string to an object first
-      const parsedState = JSON.parse(stateParam);
-
       // Now send the parsed object to the backend
       const res = await fetch('http://localhost:8000/guava', {
         method: "POST",
@@ -44,48 +67,27 @@ export default function MapPage() {
         },
         body: JSON.stringify(parsedState)  // Send the actual object, not the string
       });
-
+      
       const data = await res.json();
       setResponse(data.message);
       console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
-      console.log("yo guavaFinder has finished", data);
-    } catch (error) {
-      console.error('Error calling backend:', error);
-      setResponse('Failed to fetch from backend');
-    }
+    setResponse('Failed to fetch from backend');
   }
+}
 
   useEffect(() => {
-    guavaFinder();
-  }, []);
+      const stateParam = searchParams.get('state');
+      console.log("stateparam is", stateParam);
+      if (!stateParam) {
+        console.error("No state parameter found");
+        return;
+      }
 
-
-  // useEffect(() => {
-  //   const stateParam = searchParams.get("state");
-  //   if(stateParam) {
-  //     try {
-  //       guavaFinder();
-  //     } catch (error) {
-  //       console.error(error);
-
-  //     }
-  //   }
-  // })
-
-
-  const stateParam = searchParams.get('state');
-
-  if (stateParam) {
-    try {
+      // Parse the JSON string to an object first
       const parsedState = JSON.parse(stateParam);
-      setRouteParams(parsedState);
-      guavaFinder();
-    } catch (error) {
-      console.error("error parsing state parameter:", error);
-    }
-  }
-}, [searchParams]);
+      guavaFinder(parsedState);
+  }, [searchParams]);
 
 return (
   <div className="flex justify-center">
