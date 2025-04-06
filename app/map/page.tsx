@@ -59,6 +59,7 @@ export default function MapPage() {
 
   useEffect(() => {
     const stateParam = searchParams.get('state');
+    console.log("searchParams is", stateParam);
     console.log("stateparam is", stateParam);
     if (!stateParam) {
       console.error("No state parameter found");
@@ -67,8 +68,16 @@ export default function MapPage() {
 
     // Parse the JSON string to an object first
     const parsedState = JSON.parse(stateParam);
+    setRouteParams(parsedState);
+    console.log("parsedState is", parsedState);
     guavaFinder(parsedState);
   }, [searchParams]);
+
+  if (!routeParams || !response) {
+    return (
+      <div>Loading...</div>
+    )
+  }
 
   return (
     <div className="flex justify-center">
@@ -78,41 +87,38 @@ export default function MapPage() {
             <Card className="w-full">
               <CardHeader>
                 <CardTitle>Starting Point</CardTitle>
-                <CardDescription>Sargent Hall</CardDescription>
+                <CardDescription>{routeParams.locationName}</CardDescription>
               </CardHeader>
             </Card>
             <Card className="w-full">
               <CardHeader>
                 <CardTitle>Distance</CardTitle>
-                <CardDescription>5mi</CardDescription>
+                <CardDescription>{`${routeParams.distance} ${routeParams.unit}`}</CardDescription>
               </CardHeader>
             </Card>
           </div>
 
-          {/* // BUTTON */}
-          <div className="w-full flex pr-4 object-left">
-            <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
-              <RotateCcwIcon className="h-25 w-25" />
-              Regenerate route
-            </Button>
+          <div className="flex flex-row gap-4 mb-8">
+            <GuavaMaps route={testRoute} color="red" />
+            <GuavaMaps route={testRoute} color="blue" />
+            <GuavaMaps route={testRoute} color="darkslategrey" />
+          </div>
+          <div className="flex flex-row gap-4 mb-8">
+            <GuavaMaps route={testRoute} color="darkorange" />
+            <GuavaMaps route={testRoute} color="deeppink" />
+            <GuavaMaps route={testRoute} color="darkturquoise" />
           </div>
 
         </div>
-
-        <div className="flex flex-row gap-4 mb-8">
-          <GuavaMaps route={testRoute} color="red" />
-          <GuavaMaps route={testRoute} color="blue" />
-          <GuavaMaps route={testRoute} color="darkslategrey" />
-        </div>
-        <div className="flex flex-row gap-4 mb-8">
-          <GuavaMaps route={testRoute} color="darkorange" />
-          <GuavaMaps route={testRoute} color="deeppink" />
-          <GuavaMaps route={testRoute} color="darkturquoise" />
-        </div>
-
+        <SimpleMap>
+          <Polyline
+            positions={testRoute}
+            color="red"
+            weight={5}
+            opacity={0.7}
+          />
+        </SimpleMap>
       </div>
-
     </div >
-
   );
 }

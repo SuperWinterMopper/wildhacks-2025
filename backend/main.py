@@ -1,12 +1,15 @@
 # TO RUN THIS BACKEND:
 # uvicorn main:app --reload --port 8000
 
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import osmnx as ox
+from generate_routes import generate_routes
 
 app = FastAPI()
+
+G = ox.load_graphml("sarge7.5km.graphml")
 
 # Allow frontend access
 app.add_middleware(
@@ -31,16 +34,13 @@ def guavaFinder_get():
     return {"message": "Testing, response recieved from backend. Guava"}
 
 @app.post("/guava")
-def guavaFinder_post(request: RouteRequest):
+def guavaFinder_post(request: RouteRequest): 
 
-    # temporary code.
-    
-    # Josh and Mirai, delete this code and add your code.
-    # the request has the variables listed in the class RouteRequest listed above
-    # access them via `request.travelType``, `request.unit`, etc
-    route_type = "Scenic" if request.scenery > 3 else "Standard"
-    safety_level = "High" if request.safety > 3 else "Normal"
+    routes = generate_routes(G, 
+                             request.start_lat, 
+                             request.start_lon,
+                             request.distance,)
 
     return {
-        "message": [route_type, safety_level, request.travelType, request.unit, request.distance, request.start_lat, request.start_lon]
+        "message": routes
     }
