@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -10,6 +11,8 @@ import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
 
 export default function DistanceSelector() {
+  const router = useRouter();
+
   const [distance, setDistance] = useState("5");
   const [unit, setUnit] = useState("km");
   const [travelType, setTravelType] = useState("cycle");
@@ -19,6 +22,20 @@ export default function DistanceSelector() {
   
   const units = ["km", "miles", "meters", "feet"];
   const travelTypes = ["cycle", "run"];
+
+  const handleSubmit = () => {
+    const stateParam = JSON.stringify({
+      distance: distance,
+      unit: unit,
+      travelType: travelType,
+      distanceRange: distanceRange,
+      scenery: scenery,
+      safety: safety
+    });
+
+    const encodedState = encodeURIComponent(stateParam);
+    router.push(`/map?state=${encodedState}`);
+  }
 
   return (
     <div className="w-5/6 h-screen border-gray-500 border-2">
@@ -125,13 +142,15 @@ export default function DistanceSelector() {
           </CardContent>
         </Card>
       </div>
-
-      
-        <div className="flex justify-center items-center w-full">
-            <Button variant="outline" className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-70 h-15 text-3xl"> 
+      <div className="flex justify-center items-center w-full">
+          <Button 
+            onClick={handleSubmit}
+            variant="outline" 
+            className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-70 h-15 text-3xl"
+          > 
             Find me routes
-            </Button>
-        </div>
+          </Button>
+      </div>
     </div>
     </div>
   )
