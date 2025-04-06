@@ -69,7 +69,7 @@ def nodes_in_slice(G, start_node, angle_min, angle_max, distance_min, distance_m
     return lowest_node
 
 
-def perpendicular_point(G, lat1, lon1, lat2, lon2, distance_km):
+def perpendicular_point(G, lat1, lon1, lat2, lon2, distance_m):
 
     # Convert degrees to radians
     lat1, lon1 = math.radians(lat1), math.radians(lon1)
@@ -93,7 +93,7 @@ def perpendicular_point(G, lat1, lon1, lat2, lon2, distance_km):
     delta_lon_perp /= length
 
     # Distance in radians
-    delta_sigma = distance_km / R
+    delta_sigma = distance_m / R
 
     # Destination point calculations
     lat_d = lat_m + delta_sigma * delta_lat_perp
@@ -135,8 +135,8 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
         path_1_to_2 = nx.astar_path(G, point_1, point_2, heuristic=haversine_with_graph(G), weight='length')
 
         last_points = [-1, -1, -1, -1, -2]
-        for km in linspace(0, loop_distance/2, 15):
-            point_3 = perpendicular_point(G, lat1, lon1, lat2, lon2, km)
+        for m in linspace(0, loop_distance/2, 15):
+            point_3 = perpendicular_point(G, lat1, lon1, lat2, lon2, m)
             if len(set(last_points)) <= 1:
                 break
             
