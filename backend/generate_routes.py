@@ -10,6 +10,9 @@ R = 6371.0 * 1000  # Earth's radius in meters
 MIN_DIST_SCALAR = 0.25
 MAX_DIST_SCALAR = 0.3
 
+def to_lat_lon(G, node_ids):
+    return [(G.nodes[n]['y'], G.nodes[n]['x']) for n in node_ids]
+
 def haversine_with_graph(G):
     return lambda u, v: haversine_distance(u, v, G)
 
@@ -156,7 +159,7 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
 
             if abs(loop_distance - total_distance) < thresh*0.01*loop_distance or total_distance > loop_distance:
                 paths.append({
-                    "nodes": path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:],
+                    "nodes": to_lat_lon(G, total_path),
                     "distance": total_distance,
                     "name": "filler name",
                 })
@@ -166,16 +169,16 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
     return paths
 
 
-if __name__ == "__main__":
-    SOURCE_LATLON = (42.062365, -87.677904)
-    GRAPHML_FILE = "sarge7.5km.graphml"
+# if __name__ == "__main__":
+#     SOURCE_LATLON = (42.062365, -87.677904)
+#     GRAPHML_FILE = "sarge7.5km.graphml"
 
-    G = ox.load_graphml(GRAPHML_FILE)
+#     G = ox.load_graphml(GRAPHML_FILE)
 
-    routes = generate_routes(G, 42.062365, -87.677904, loop_distance=16000, num_slices=10)
+#     routes = generate_routes(G, 42.062365, -87.677904, loop_distance=16000, num_slices=10)
 
-    # Plot graph with route
-    for path in routes:
-        ox.plot_graph_route(G, path["nodes"], route_linewidth=2, node_size=0)
+#     # Plot graph with route
+#     for path in routes:
+#         ox.plot_graph_route(G, path["nodes"], route_linewidth=2, node_size=0)
     
-    #print(paths)
+#     #print(paths)

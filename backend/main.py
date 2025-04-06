@@ -1,5 +1,5 @@
 import json
-from generate_routes import generate_routes
+from generate_routes import generate_routes, to_lat_lon
 import osmnx as ox
 import functions_framework
 
@@ -10,11 +10,13 @@ def process(request):
 
     # Handle CORS preflight
     if request.method == 'OPTIONS':
-        return ('', 204, {
+        headers = {
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Methods': 'GET',
             'Access-Control-Allow-Headers': 'Content-Type',
-        })
+            'Access-Control-Max-Age': '3600'
+        }
+        return ('', 204, headers)
     
     try:
         data = request.get_json(silent=True) or {}
