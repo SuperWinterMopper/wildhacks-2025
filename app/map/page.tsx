@@ -5,6 +5,8 @@ import SimpleMap from "@/app/map/simple-map";
 import testRoute from "@/app/map/test-route";
 import dynamic from "next/dynamic";
 import { Card, CardHeader, CardDescription, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { RotateCcwIcon } from "lucide-react";
 
 const Polyline = dynamic(
   () => import("react-leaflet").then((mod) => mod.Polyline),
@@ -30,19 +32,26 @@ export default function MapPage({testRoute: JSON}) {
               </CardHeader>
             </Card>
           </div>
-          <div className="w-1/2 bg-green">
-            <p>button on this side</p>
+
+
+          {/* // BUTTON */}
+          <div className="w-full flex pr-4 object-left">
+            <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
+              <RotateCcwIcon className="h-25 w-25" />
+              Regenerate route
+            </Button>
           </div>
+
         </div>
         <SimpleMap>
-          <Polyline 
-            positions={testRoute} 
+          <Polyline
+            positions={testRoute}
             color="red"
             weight={5}
             opacity={0.7}
-            />
+          />
         </SimpleMap>
       </div>
-    </div>
+    </div >
   );
 }
