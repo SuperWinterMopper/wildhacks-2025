@@ -13,7 +13,7 @@ const Polyline = dynamic(
   { ssr: false }
 );
 
-export default function MapPage() {
+export default function MapPage({testRoute: JSON}) {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">

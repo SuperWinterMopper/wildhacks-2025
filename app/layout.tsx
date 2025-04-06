@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import "./globals.css";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,10 +27,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <header className="text-7xl font-bold bg-gradient-to-r from-green-500 to-red-500 bg-clip-text text-transparent p-4 ">
-        GUAVA
-      </header>
       <body>
+      <Button className="p-4 bg-transparent mt-4 ml-4 hover:bg-transparent focus:bg-transparent">
+        <Link href="/" className="text-7xl font-bold bg-gradient-to-r from-green-500 to-red-500 bg-clip-text text-transparent">
+        GUAVA
+        </Link>
+      </Button>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -37,7 +41,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-    </body>
+      </body>
     </html>
   );
 }

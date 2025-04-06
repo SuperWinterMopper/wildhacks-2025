@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -10,6 +11,8 @@ import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
 
 export default function DistanceSelector() {
+  const router = useRouter();
+
   const [distance, setDistance] = useState("5");
   const [unit, setUnit] = useState("km");
   const [travelType, setTravelType] = useState("cycle");
@@ -19,6 +22,20 @@ export default function DistanceSelector() {
 
   const units = ["km", "miles", "meters", "feet"];
   const travelTypes = ["cycle", "run"];
+
+  const handleSubmit = () => {
+    const stateParam = JSON.stringify({
+      distance: distance,
+      unit: unit,
+      travelType: travelType,
+      distanceRange: distanceRange,
+      scenery: scenery,
+      safety: safety
+    });
+
+    const encodedState = encodeURIComponent(stateParam);
+    router.push(`/map?state=${encodedState}`);
+  }
 
   return (
     <div className="w-5/6 h-screen border-gray-500 border-2">
@@ -77,6 +94,7 @@ export default function DistanceSelector() {
             </DropdownMenu>
           </div>
         </div>
+<<<<<<< HEAD
 
 
 
@@ -136,7 +154,66 @@ export default function DistanceSelector() {
           </Button>
         </div>
       </div>
+=======
+        
+        
+
+      <div className="w-full text-5xl py-5">Starting from...</div>
+      <div className="w-full flex gap-4">
+        <Input type="text" placeholder="Enter a location" className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" />
+      </div>
+      <div className="w-full text-5xl py-5">Prioritizing...</div>
+      <div className="w-full flex gap-4">
+        <Card className="w-1/2 text-3xl">
+          <CardHeader>
+            <CardTitle>Scenery</CardTitle>
+            <CardDescription className="text-2xl">{scenery}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              defaultValue={[scenery]}
+              max={5}
+              min={1}
+              step={1}
+              onValueChange={(value) => {
+                setScenery(value[0]);
+                console.log(scenery);
+              }}
+              className={cn("w-[100%] cursor-pointer")}
+            />
+          </CardContent>
+        </Card>
+        <Card className="w-1/2 !text-3xl">
+          <CardHeader>
+            <CardTitle>Safety</CardTitle>
+            <CardDescription className="text-2xl">{safety}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Slider
+              defaultValue={[safety]}
+              max={5}
+              min={1}
+              step={1}
+              onValueChange={(value) => {
+                setSafety(value[0]);
+                console.log(safety);
+              }}
+              className={cn("w-[100%] cursor-pointer")}
+            />
+          </CardContent>
+        </Card>
+      </div>
+      <div className="flex justify-center items-center w-full">
+          <Button 
+            onClick={handleSubmit}
+            variant="outline" 
+            className="!border-2 !border-green-500 font-medium flex justify-center p-4 cursor-pointer w-70 h-15 text-3xl"
+          > 
+            Find me routes
+          </Button>
+      </div>
+    </div>
+>>>>>>> ff001b7e191f8391cbe10f77a48fcea5d57a984c
     </div>
   )
 }
-
