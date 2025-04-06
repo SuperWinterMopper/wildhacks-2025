@@ -27,15 +27,24 @@ highway_mod = {
     "unclassified": 3,
     "living_street": 2,
     "pedestrian": 2,
+    "service": 2,
     "secondary": 0.5,
     "secondary_link": 0.5,
-    "service": 0.3,
     "track": 0.3,
     "bridleway": 0.3,
     "path": 0.3,
     "primary": 0.1,
     "primary_link": 0.1,
     "busway": 0.1
+}
+
+service_mod = {
+    "driveway": 0.3,
+    "alley": 0.3,
+    "emergency_access": 0.3,
+    "parking_aisle": 0.5,
+    "drive_through": 0.4,
+    "slipway": 0.3
 }
 
 # maxspeed modifier (only if not a cycleway):
@@ -70,12 +79,8 @@ def maxspeed_mod(ms):
 # - other: x0.2
 bicycle_mod = {
     "designated": 2,
-    "yes": 1,
-    "use_sidepath": 1,
-    "optional_sidepath": 1,
-    "permissive": 1,
-    "destination": 1,
-    "dismount": 0.8
+    "dismount": 0.8,
+    "no": 0.2
 }
 
 # cycleway modifier:
@@ -133,25 +138,26 @@ surface_mod = {
 # - critical_dist: min(dist_so_far, abs(total_dist - dist_so_far))
 # - data: edge data
 def weight(dest, prev, data):
-
     weight = 1
 
     highway = listify(data.get("highway", ""))
     weight *= min([highway_mod.get(x, 0) for x in highway])
 
-    if highway == "cycleway":
+    if "cycleway" in highway:
         cycleway = listify(data.get("cycleway", ""))
         weight *= min([cycleway_mod.get(x, 1) for x in cycleway])
+        bicycle = listify(data.get("bicycle", ""))
+        weight *= min([bicycle_mod.get(x, 1) for x in bicycle])
     else:
         maxspeed = listify(data.get("maxspeed", ""))
         weight *= min([maxspeed_mod(x) for x in maxspeed])
 
-    #bicycle = listify(data.get("bicycle", ""))
-    #weight *= min([bicycle_mod.get(x, 0.2) for x in bicycle])
+    service = listify(data.get("service", ""))
+    weight *= min([service_mod.get(x, 1) for x in service])
 
     surface = listify(data.get("surface", ""))
     weight *= min([surface_mod.get(x, 1) for x in surface])
-    return 1/(math.log2(weight + 1.001)) #* data.get("length", 0)
+    return 1/(math.log2(weight + 1.001))
 
 def listify(x):
     if not isinstance(x, list):
