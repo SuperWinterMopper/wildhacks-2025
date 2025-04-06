@@ -10,6 +10,7 @@ import { RotateCcwIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { request } from "http";
+import { parseStaticPathsResult } from "next/dist/lib/fallback";
 
 const Polyline = dynamic(
   () => import("react-leaflet").then((mod) => mod.Polyline),
@@ -53,14 +54,18 @@ export default function MapPage() {
       // });
 
       // NEW REQUEST TO GOOGLE CLOUD
+      // parsedState = {"distance": parsedState.distance, "start_lat": parsedState.start_lat, "start_lon": parsedState.start_lon};
+
+      const input = JSON.stringify(parsedState);
+      console.log("the input into the backend python is", input);
       const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
       const res = await fetch(targetUrl, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        // body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
-        body: JSON.stringify(parsedState),
+        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
+        // body: input,
       });
 
       const data = await res.json();

@@ -24,6 +24,7 @@ export default function DistanceSelector() {
   const [distanceRange, setDistanceRange] = useState("0");
   const [scenery, setScenery] = useState(3);
   const [safety, setSafety] = useState(3);
+  const [startingLocation, setStartingLocation] = useState("");
 
   const [query, setQuery] = useState(""); // user input
   const [results, setResults] = useState<Array<{ label: string; x: number; y: number }>>([]);
@@ -161,8 +162,8 @@ export default function DistanceSelector() {
           </div>
         </div>
 
-        {/* <div className="w-full text-5xl py-5 text-center">starting from...</div> */}
-        {/* <div className="w-full flex gap-4">
+        {/* <div className="w-full text-5xl py-5 text-center">starting from...</div>
+        <div className="w-full flex gap-4">
           <Input
             type="text"
             value={startingLocation}
@@ -171,7 +172,7 @@ export default function DistanceSelector() {
             className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl"
           />
         </div> */}
-        {/* <div className="w-full flex justify-center">{LocationSearchBar()}</div> */}
+        <div className="w-full flex justify-center">{LocationSearchBar()}</div>
 
 
         <div className="w-full text-center text-5xl py-5">Prioritizing...</div>
