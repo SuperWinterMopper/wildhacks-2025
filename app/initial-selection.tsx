@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
-// import LocationSearchBar from "@/app/geosearch"
+import LocationSearchBar from "@/app/geosearch"
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import convert from "./unit-converter"
 
@@ -111,7 +111,7 @@ export default function DistanceSelector() {
           <div className="flex items-center justify-center w-2/3 mx-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/3 !text-3xl h-15">
+                <Button variant="outline" className="rounded-r-none border-r-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
                   {travelType}
                   <ChevronDown className="ml-1 h-4" />
                 </Button>
@@ -128,7 +128,7 @@ export default function DistanceSelector() {
               type="number"
               value={distance}
               onChange={(e) => setDistance(e.target.value)}
-              className="rounded-r-none rounded-l-none flex-grow w-1/3 !text-3xl h-15"
+              className="rounded-r-none rounded-l-none flex-grow w-1/4 !text-3xl h-15"
               min="0"
             />
             {/* <div className="relative flex-grow w-1/4">
@@ -145,7 +145,7 @@ export default function DistanceSelector() {
             </div> */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/3 !text-3xl h-15">
+                <Button variant="outline" className="rounded-l-none border-l-0 cursor-pointer flex-grow w-1/4 !text-3xl h-15">
                   {unit}
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </Button>

@@ -16,9 +16,9 @@ const Polyline = dynamic(
   { ssr: false }
 );
 
-function GuavaMaps({ route, color, id, onClick }: {color: string, id: number}) {
+function GuavaMaps({ route, color, id, onClick }: { color: string, id: number }) {
   return (
-    <div 
+    <div
       className="w-[400px] h-[300px]"
       onClick={() => onClick(id)}
     >
@@ -102,7 +102,7 @@ export default function MapPage() {
     setSelectedMap(null);
   };
 
-  const lineColors = ["red", "blue", "darkslategrey", "darkorange", "deeppink","darkturquoise"]
+  const lineColors = ["red", "blue", "darkslategrey", "darkorange", "deeppink", "darkturquoise"]
 
   const mapData = [
     { id: 1, route: testRoute, color: "red" },
@@ -113,7 +113,7 @@ export default function MapPage() {
     { id: 6, route: testRoute, color: "darkturquoise" }
   ];
 
-  if(selectedMap !== null) {
+  if (selectedMap !== null) {
     const selectedMapData = mapData.find(map => map.id === selectedMap);
 
     return (
@@ -156,32 +156,32 @@ export default function MapPage() {
           </div>
         </div>
 
-          <div className="flex flex-row gap-4 mb-8">
-            {mapData.slice(0, 3).map((id, route, color) => (
-              <GuavaMaps 
-                route={route}
-                color={color}
-                id={id}
-                onClick={handleMapClick}
-              />
-            ))}
-            {/* <GuavaMaps route={testRoute} color="red" />
+        <div className="flex flex-row gap-4 mb-8">
+          {mapData.slice(0, 3).map((id, route, color) => (
+            <GuavaMaps
+              route={route}
+              color={color}
+              id={id}
+              onClick={handleMapClick}
+            />
+          ))}
+          {/* <GuavaMaps route={testRoute} color="red" />
             <GuavaMaps route={testRoute} color="blue" />
             <GuavaMaps route={testRoute} color="darkslategrey" /> */}
-          </div>
-          <div className="flex flex-row gap-4 mb-8">
-            {mapData.slice(3, 6).map((id, route, color) => (
-                <GuavaMaps 
-                  route={route}
-                  color={color}
-                  id={id}
-                  onClick={handleMapClick}
-              />
-            ))}
-            {/* <GuavaMaps route={testRoute} color="darkorange" />
+        </div>
+        <div className="flex flex-row gap-4 mb-8">
+          {mapData.slice(3, 6).map((id, route, color) => (
+            <GuavaMaps
+              route={route}
+              color={color}
+              id={id}
+              onClick={handleMapClick}
+            />
+          ))}
+          {/* <GuavaMaps route={testRoute} color="darkorange" />
             <GuavaMaps route={testRoute} color="deeppink" />
             <GuavaMaps route={testRoute} color="darkturquoise" /> */}
-          </div>
+        </div>
 
       </div>
     </div >
