@@ -19,7 +19,7 @@ import math
 # - trunk(_link)/motorway(_link): x0
 # - other: x0
 highway_mod = {
-    "cycleway": 10,
+    "cycleway": 15,
     "tertiary": 6,
     "tertiary_link": 6,
     "residential": 4,
@@ -28,11 +28,12 @@ highway_mod = {
     "living_street": 2,
     "pedestrian": 2,
     "service": 2,
+    "footway": 1,
+    "path": 1,
+    "bridleway": 0.8,
+    "track": 0.8,
     "secondary": 0.5,
     "secondary_link": 0.5,
-    "track": 0.3,
-    "bridleway": 0.3,
-    "path": 0.3,
     "primary": 0.1,
     "primary_link": 0.1,
     "busway": 0.1
