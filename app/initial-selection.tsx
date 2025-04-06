@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
+import LocationSearchBar from "@/app/geosearch"
 
 export default function DistanceSelector() {
   const router = useRouter();
@@ -95,16 +96,31 @@ export default function DistanceSelector() {
             </DropdownMenu>
           </div>
         </div>
+
+
+
+
         <div className="w-full text-5xl py-5">Starting from...</div>
-        <div className="w-full flex gap-4">
-          <Input 
-            type="text" 
+        {/* <div className="w-full flex gap-4">
+          <Input
+            type="text"
             value={startingLocation}
-            onChange={(e) => {setStartingLocation(e.target.value)}}
-            placeholder="Enter a location" 
-            className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl" 
+            onChange={(e) => { setStartingLocation(e.target.value) }}
+            placeholder="Enter a location"
+            className="flex justify-start cursor-text h-15 w-1/2 placeholder:text-3xl text-3xl"
           />
-        </div>
+        </div> */}
+
+        <LocationSearchBar />
+
+
+
+
+
+
+
+
+
         <div className="w-full text-5xl py-5">Prioritizing...</div>
         <div className="w-full flex gap-4">
           <Card className="w-1/2 text-3xl">

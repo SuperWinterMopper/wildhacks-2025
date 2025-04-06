@@ -21,7 +21,7 @@ export default function MapPage() {
 
   useEffect(() => {
     const stateParam = searchParams.get("state");
-    if(stateParam) {
+    if (stateParam) {
       try {
 
       } catch (error) {
@@ -29,7 +29,7 @@ export default function MapPage() {
       }
     }
   })
-  
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
@@ -68,6 +68,8 @@ export default function MapPage() {
           />
         </SimpleMap>
       </div>
+
     </div >
+
   );
 }

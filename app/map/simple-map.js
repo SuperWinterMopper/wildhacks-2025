@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
+import SearchControl from "@/app/geosearch";
 
 // Dynamically import MapContainer and TileLayer, renaming them to avoid conflicts
 const MapContainer = dynamic(
