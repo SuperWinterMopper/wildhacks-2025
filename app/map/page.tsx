@@ -98,6 +98,7 @@ export default function MapPage() {
               </CardHeader>
             </Card>
           </div>
+        </div>
 
           <div className="flex flex-row gap-4 mb-8">
             <GuavaMaps route={testRoute} color="red" />
@@ -110,7 +111,6 @@ export default function MapPage() {
             <GuavaMaps route={testRoute} color="darkturquoise" />
           </div>
 
-        </div>
         <SimpleMap>
           <Polyline
             positions={testRoute}
