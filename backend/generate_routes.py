@@ -4,6 +4,8 @@ import math
 from custom_weights import weight
 from latlonutil import haversine_distance, calculate_bearing
 from name_route import name_route
+from score_safety import score_safety
+from score_scenery import score_scenery
 
 # --- CONFIGURATION ---
 THRESH = 6.5 # percent
@@ -113,7 +115,7 @@ def get_path_distance(G, path):
     return distance
 
 
-def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thresh=THRESH):
+def generate_routes(G, S, source_lat, source_lon, loop_distance, num_slices=8, thresh=THRESH):
     point_1 = ox.distance.nearest_nodes(G, float(source_lon), float(source_lat))
 
     min_dist = MIN_DIST_SCALAR * loop_distance
@@ -156,12 +158,15 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
 
             total_path = path_1_to_2 + path_2_to_3[1:] + path_3_to_1[1:]
             total_distance = get_path_distance(G, total_path)
+            as_lat_lon = to_lat_lon(G, total_path)
 
             if abs(loop_distance - total_distance) < thresh*0.01*loop_distance or total_distance > loop_distance:
                 paths.append({
-                    "nodes": to_lat_lon(G, total_path),
+                    "nodes": as_lat_lon,
                     "distance": total_distance,
                     "name": name_route(G, total_path, total_distance),
+                    "safety_score": score_safety(G, total_path),
+                    "scenery_score": score_scenery(S, as_lat_lon)
                 })
                 break
     
@@ -172,10 +177,12 @@ def generate_routes(G, source_lat, source_lon, loop_distance, num_slices=8, thre
 # if __name__ == "__main__":
 #     SOURCE_LATLON = (42.062365, -87.677904)
 #     GRAPHML_FILE = "sarge7.5km.graphml"
+#     import pandas as pd
 
 #     G = ox.load_graphml(GRAPHML_FILE)
+#     S = pd.read_csv('scenic_points.csv', header=None, names=["lat", "lon", "tag"])
 
-#     routes = generate_routes(G, 42.062365, -87.677904, loop_distance=5000, num_slices=8)
+#     routes = generate_routes(G, S, 42.062365, -87.677904, loop_distance=5000, num_slices=8)
 
 #     for route in routes:
 #         print("\n", route)

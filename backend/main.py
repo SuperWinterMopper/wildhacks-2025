@@ -1,9 +1,14 @@
 import json
-from generate_routes import generate_routes, to_lat_lon
+from generate_routes import generate_routes
 import osmnx as ox
 import functions_framework
+import pandas as pd
 
+# Opens graphml
 G = ox.load_graphml("sarge7.5km.graphml")
+
+# Opens scenery
+S = pd.read_csv('scenic_points.csv', header=None, names=["lat", "lon", "tag"])
 
 @functions_framework.http
 def process(request):
@@ -25,7 +30,7 @@ def process(request):
         start_lon = float(data["start_lon"])
         distance = float(data["distance"])
 
-        routes = generate_routes(G, start_lat, start_lon, distance, 8)
+        routes = generate_routes(G, S, start_lat, start_lon, distance, 8)
 
         return (json.dumps(routes), 200, {
             "Content-Type": "application/json",

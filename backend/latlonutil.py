@@ -12,7 +12,8 @@ def haversine_distance(node1, node2, G):
     # Haversine formula
     dlat = lat2 - lat1
     dlon = lon2 - lon1
-    a = a = sin(dlat/2) * 2 + cos(lat1) * cos(lat2) * sin(dlon/2) * 2
+    a = sin(dlat/2) * 2 + cos(lat1) * cos(lat2) * sin(dlon/2) * 2
+    a = min(1.0, max(0.0, a))
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     r = 6371  # Radius of Earth in kilometers
     return r * c
