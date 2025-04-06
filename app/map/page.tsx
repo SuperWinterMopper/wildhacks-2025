@@ -38,20 +38,23 @@ export default function MapPage() {
   const [response, setResponse] = useState<string | null>(null);
 
   const guavaFinder = async (parsedState) => {
-    console.log("HEYYY IN guavaFinder, the parsedState is", parsedState);
     try {
       console.log("Guava finder running...");
       // Now send the parsed object to the backend
-      const res = await fetch('http://localhost:8000/guava', {
+      const proxyUrl = 'http://localhost:8080/';
+      const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
+      const res = await fetch(proxyUrl + targetUrl, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(parsedState)  // Send the actual object, not the string
+        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
       });
 
+      console.log("starting request")
       const data = await res.json();
-      setResponse(data.message);
+      console.log(data[0]["nodes"])
+      setResponse(data);
       console.log("yo guavaFinder has finished", data.message);
     } catch (error) {
       setResponse('Failed to fetch from backend');
@@ -98,27 +101,28 @@ export default function MapPage() {
               </CardHeader>
             </Card>
           </div>
+
+          {/* {response == null ? <></> :
+           response[0]["nodes"].map((n) => {<p>n</p>})} */}
+
+          <div className="flex flex-row gap-4 mb-8">
+            {response == null ? <></> :
+            <GuavaMaps route={response[0]["nodes"]} color="red" />}
+          </div>
+          <div className="flex flex-row gap-4 mb-8">
+            {response == null ? <></> :
+            <GuavaMaps route={response[1]["nodes"]} color="red" />}
+          </div>
+
         </div>
-
-          <div className="flex flex-row gap-4 mb-8">
-            <GuavaMaps route={testRoute} color="red" />
-            <GuavaMaps route={testRoute} color="blue" />
-            <GuavaMaps route={testRoute} color="darkslategrey" />
-          </div>
-          <div className="flex flex-row gap-4 mb-8">
-            <GuavaMaps route={testRoute} color="darkorange" />
-            <GuavaMaps route={testRoute} color="deeppink" />
-            <GuavaMaps route={testRoute} color="darkturquoise" />
-          </div>
-
-        <SimpleMap>
+        {/* {response == null ? <></> : <SimpleMap>
           <Polyline
-            positions={testRoute}
+            positions={response[0]["nodes"]}
             color="red"
             weight={5}
             opacity={0.7}
           />
-        </SimpleMap>
+        </SimpleMap>} */}
       </div>
     </div >
   );
