@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { RotateCcwIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { request } from "http";
 
 const Polyline = dynamic(
   () => import("react-leaflet").then((mod) => mod.Polyline),
@@ -24,10 +25,31 @@ export default function MapPage() {
   const guavaFinder = async () => {
     try {
       console.log("Guava finder running...");
-      const res = await fetch('http://localhost:8000/hello');
+
+      const stateParam = searchParams.get('state');
+
+      if (!stateParam) {
+        console.error("No state parameter found");
+        return;
+      }
+
+      // Parse the JSON string to an object first
+      const parsedState = JSON.parse(stateParam);
+
+      // Now send the parsed object to the backend
+      const res = await fetch('http://localhost:8000/guava', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(parsedState)  // Send the actual object, not the string
+      });
+
       const data = await res.json();
       setResponse(data.message);
       console.log("yo guavaFinder has finished", data.message);
+    } catch (error) {
+      console.log("yo guavaFinder has finished", data);
     } catch (error) {
       console.error('Error calling backend:', error);
       setResponse('Failed to fetch from backend');
@@ -52,46 +74,58 @@ export default function MapPage() {
   // })
 
 
-  return (
-    <div className="flex justify-center">
-      <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
-        <div className="flex w-full py-10">
-          <div className="flex w-1/2">
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle>Starting Point</CardTitle>
-                <CardDescription>Sargent Hall</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="w-full">
-              <CardHeader>
-                <CardTitle>Distance</CardTitle>
-                <CardDescription>5mi</CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
+  const stateParam = searchParams.get('state');
 
+  if (stateParam) {
+    try {
+      const parsedState = JSON.parse(stateParam);
+      setRouteParams(parsedState);
+      guavaFinder();
+    } catch (error) {
+      console.error("error parsing state parameter:", error);
+    }
+  }
+}, [searchParams]);
 
-          {/* // BUTTON */}
-          <div className="w-full flex pr-4 object-left">
-            <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
-              <RotateCcwIcon className="h-25 w-25" />
-              Regenerate route
-            </Button>
-          </div>
-
+return (
+  <div className="flex justify-center">
+    <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
+      <div className="flex w-full py-10">
+        <div className="flex w-1/2">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Starting Point</CardTitle>
+              <CardDescription>Sargent Hall</CardDescription>
+            </CardHeader>
+          </Card>
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Distance</CardTitle>
+              <CardDescription>5mi</CardDescription>
+            </CardHeader>
+          </Card>
         </div>
-        <SimpleMap>
-          <Polyline
-            positions={testRoute}
-            color="red"
-            weight={5}
-            opacity={0.7}
-          />
-        </SimpleMap>
+
+        {/* // BUTTON */}
+        <div className="w-full flex pr-4 object-left">
+          <Button variant="outline" className="cursor-pointer border-2 !border-green-500 h-25 w-50">
+            <RotateCcwIcon className="h-25 w-25" />
+            Regenerate route
+          </Button>
+        </div>
+
       </div>
+      <SimpleMap>
+        <Polyline
+          positions={testRoute}
+          color="red"
+          weight={5}
+          opacity={0.7}
+        />
+      </SimpleMap>
+    </div>
 
-    </div >
+  </div >
 
-  );
+);
 }
