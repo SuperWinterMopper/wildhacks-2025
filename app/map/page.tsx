@@ -12,6 +12,7 @@ import { request } from "http";
 import { parseStaticPathsResult } from "next/dist/lib/fallback";
 import { Polyline } from "@/app/map/polyline";
 import GuavaMaps from "@/app/map/guava-map";
+import guavaFinder from "@/app/map/guava-finder";
 
 
 export default function MapPage() {
@@ -27,30 +28,6 @@ export default function MapPage() {
   const [selectedMap, setSelectedMap] = useState<number | null>(null);
   const [response, setResponse] = useState<RoutesCollection | null>(null);
 
-  const guavaFinder = async (parsedState: any) => {
-    try {
-      console.log("Guava finder running...");
-      const input = JSON.stringify(parsedState);
-      
-      const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
-      const res = await fetch(targetUrl, {
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5}'
-        // body: input,
-      });
-
-      const data = await res.json();
-      console.log("the size of the array returned is", data.length);
-      console.log("yo guavaFinder has finished", data);
-      setResponse(data);
-    } catch (error) {
-      console.log("Failed to fetch from backend, error: ", error);
-    }
-  }
-
   useEffect(() => {
     const stateParam = searchParams.get('state');
     console.log("searchParams is", stateParam);
@@ -64,7 +41,7 @@ export default function MapPage() {
     const parsedState = JSON.parse(stateParam);
     setRouteParams(parsedState);
     console.log("parsedState is", parsedState);
-    guavaFinder(parsedState);
+    guavaFinder(parsedState, setResponse);
   }, [searchParams]);
 
   if (!routeParams || !response) {
