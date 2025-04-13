@@ -59,30 +59,18 @@ export default function MapPage() {
   const [selectedMap, setSelectedMap] = useState<number | null>(null);
   const [response, setResponse] = useState<RoutesCollection | null>(null);
 
-  const guavaFinder = async (parsedState) => {
+  const guavaFinder = async (parsedState: any) => {
     try {
       console.log("Guava finder running...");
-      // Now send the parsed object to the backend
-      // const res = await fetch('http://localhost:8000/guava', {
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(parsedState)  // Send the actual object, not the string
-      // });
-
-      // NEW REQUEST TO GOOGLE CLOUD
-      // parsedState = {"distance": parsedState.distance, "start_lat": parsedState.start_lat, "start_lon": parsedState.start_lon};
-
       const input = JSON.stringify(parsedState);
-      console.log("the input into the backend python is", input);
+      // console.log("the input into the backend python is", input);
       const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
       const res = await fetch(targetUrl, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5000}'
+        body: '{"start_lat": 42.062365, "start_lon": -87.677904, "distance": 5}'
         // body: input,
       });
 
@@ -91,7 +79,7 @@ export default function MapPage() {
       console.log("yo guavaFinder has finished", data);
       setResponse(data);
     } catch (error) {
-      setResponse('Failed to fetch from backend');
+      console.log("Failed to fetch from backend, error: ", error);
     }
   }
 
@@ -126,7 +114,7 @@ export default function MapPage() {
   };
 
   const lineColors = ["red", "blue", "darkslategrey", "darkorange", "deeppink","darkturquoise"]
-  const mapData = response.map((item, index) => {
+  const mapData = response ? response.map((item, index) => {
     return {
       id: index + 1, // Adding 1 to make IDs start at 1 instead of 0
       nodes: item.nodes, // Assuming each item in response has route data
@@ -134,7 +122,7 @@ export default function MapPage() {
       name: item.name,
       color: lineColors[index % lineColors.length] // Cycle through colors if there are more routes than colors
     };
-  });  
+  }) : [];  
   
   if(selectedMap !== null) {
     const selectedMapData = mapData.find(map => map.id === selectedMap);
@@ -164,7 +152,7 @@ export default function MapPage() {
     <div className="flex justify-center">
       <div className="flex flex-col justify-center items-center w-9/10 h-screen py-15">
         <div className="flex w-full py-10">
-          <div className="flex w-1/2">
+          <div className="flex w-4/5 space-x-10">
             <Card className="w-full">
               <CardHeader>
                 <CardTitle>Starting Point</CardTitle>
@@ -190,23 +178,7 @@ export default function MapPage() {
                 onClick={handleMapClick}
               />
             ))}
-            {/* <GuavaMaps route={testRoute} color="red" />
-            <GuavaMaps route={testRoute} color="blue" />
-            <GuavaMaps route={testRoute} color="darkslategrey" /> */}
           </div>
-          {/* <div className="flex flex-row gap-4 mb-8">
-            {mapData.slice(3, 6).map((id, route, color) => (
-                <GuavaMaps 
-                  route={route}
-                  color={color}
-                  id={id}
-                  onClick={handleMapClick}
-              />
-            ))}
-            <GuavaMaps route={testRoute} color="darkorange" />
-            <GuavaMaps route={testRoute} color="deeppink" />
-            <GuavaMaps route={testRoute} color="darkturquoise" />
-          </div> */}
       </div>
     </div >
   );

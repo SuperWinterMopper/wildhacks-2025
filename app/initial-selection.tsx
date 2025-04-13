@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
-// import LocationSearchBar from "@/app/geosearch"
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import convert from "./unit-converter"
 
@@ -51,8 +50,8 @@ export default function DistanceSelector() {
       locationName: selected?.label
     });
 
+    console.log("the stateParam being passed to map page is", stateParam);
     const encodedState = encodeURIComponent(stateParam);
-    console.log(encodedState);
     router.push(`/map?state=${encodedState}`);
   }
 
