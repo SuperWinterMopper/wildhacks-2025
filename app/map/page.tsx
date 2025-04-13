@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import SimpleMap from "@/app/map/simple-map";
 import testRoute from "@/app/map/test-route";
-import dynamic from "next/dynamic";
 import { Card, CardHeader, CardDescription, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RotateCcwIcon } from "lucide-react";
@@ -11,21 +10,14 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { request } from "http";
 import { parseStaticPathsResult } from "next/dist/lib/fallback";
-
-const Polyline = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Polyline),
-  { ssr: false }
-);
+import { Polyline } from "@/app/map/polyline";
 
 function GuavaMaps({ route, color, id, onClick }: {
   route: any[],
   color: string, 
   id: number,
   onClick: (id: number) => void
-}) {
-  console.log("this is GuavaMaps, color", color)
-  console.log("this is GuavaMaps, id", id)
-  
+}) {  
   const positions = route.map(coord => [coord[0], coord[1]]);
   console.log("this is GuavaMaps, route", positions)
 
