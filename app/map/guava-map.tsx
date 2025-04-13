@@ -1,6 +1,7 @@
+import SimpleMap from "@/app/map/simple-map";
+import { Polyline } from "@/app/map/polyline";
 
-
-function GuavaMaps({ route, color, id, onClick }: {
+export default function GuavaMaps({ route, color, id, onClick }: {
     route: any[],
     color: string, 
     id: number,

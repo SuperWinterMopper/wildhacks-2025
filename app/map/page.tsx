@@ -11,32 +11,8 @@ import { useState } from "react";
 import { request } from "http";
 import { parseStaticPathsResult } from "next/dist/lib/fallback";
 import { Polyline } from "@/app/map/polyline";
+import GuavaMaps from "@/app/map/guava-map";
 
-function GuavaMaps({ route, color, id, onClick }: {
-  route: any[],
-  color: string, 
-  id: number,
-  onClick: (id: number) => void
-}) {  
-  const positions = route.map(coord => [coord[0], coord[1]]);
-  console.log("this is GuavaMaps, route", positions)
-
-  return (
-    <div 
-      className="w-[400px] h-[300px]"
-      onClick={() => onClick(id)}
-    >
-      <SimpleMap>
-        <Polyline
-          positions={positions}
-          color={color}
-          weight={5}
-          opacity={0.7}
-        />
-      </SimpleMap>
-    </div>
-  );
-}
 
 export default function MapPage() {
   type RouteData = { //return type of backend
@@ -55,7 +31,7 @@ export default function MapPage() {
     try {
       console.log("Guava finder running...");
       const input = JSON.stringify(parsedState);
-      // console.log("the input into the backend python is", input);
+      
       const targetUrl = 'https://python-http-function-93149730763.us-central1.run.app/';
       const res = await fetch(targetUrl, {
         method: "POST",
