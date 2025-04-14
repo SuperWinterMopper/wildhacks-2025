@@ -30,7 +30,7 @@ export default function RootLayout({
       <body>
       <Button className="p-4 bg-transparent mt-4 ml-4 hover:bg-transparent focus:bg-transparent">
         <Link href="/" className="text-7xl font-bold bg-gradient-to-r from-green-500 to-red-500 bg-clip-text text-transparent">
-        GUAVA
+          GUAVA
         </Link>
       </Button>
         <ThemeProvider

@@ -74,8 +74,11 @@ export default function MapPage() {
     console.log("selected map is", selectedMapData);
 
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="w-[90vw] h-[80vh] mb-4">
+      <div className="flex flex-col items-center justify-center">
+        <Button onClick={handleBackToGrid} className="mt-4">
+          <RotateCcwIcon className="mr-2 h-4 w-4" /> Back to Grid
+        </Button>
+        <div className="w-[100vw] h-screen mt-4 mb-4">
           <SimpleMap>
             <Polyline
               positions={selectedMapData.nodes}
@@ -85,11 +88,7 @@ export default function MapPage() {
             />
           </SimpleMap>
         </div>
-        <Button onClick={handleBackToGrid} className="mt-4">
-          <RotateCcwIcon className="mr-2 h-4 w-4" /> Back to Grid
-        </Button>
-      </div>
-      // <div>CLICKED ON MAP!!</div>
+      </div>  
     );
   }  
   
@@ -107,7 +106,7 @@ export default function MapPage() {
             <Card className="w-full">
               <CardHeader>
                 <CardTitle>Distance</CardTitle>
-                <CardDescription>{`${routeParams.distance} ${routeParams.unit}`}</CardDescription>
+                <CardDescription>{`${routeParams.distance}m`}</CardDescription>
               </CardHeader>
             </Card>
           </div>
